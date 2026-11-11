@@ -1,0 +1,48 @@
+# 媒体与产物（不入库）
+library/
+library_old/
+library_prev/
+media/
+res/
+tmp_asr/
+cuts_all/
+site/audio/
+site/web/cover.jpg
+*.lrc
+*.ass
+*.m4a
+*.mp3
+*.wav
+*.flac
+*.mp4
+
+# 模型与依赖
+models/
+lib2/
+bin2/
+venv/
+.venv/
+.DS_Store
+__pycache__/
+*.pyc
+
+# 运行期数据（含曲库索引、缓存、指标）
+queue/*.json
+queue/*.jsonl
+!queue/streams.sample.json
+queue/asr_v3/
+queue/backups/
+queue/identify_cache.json
+queue/official_cache.json
+queue/mimo_usage.json
+run/
+logs/*.log
+!logs/*_sample.log
+!logs/*_sample.json
+!logs/mimo_bench.json
+
+# 凭据
+.credentials.yaml
+settings.yaml
+settings.yaml.bak*
+*.env

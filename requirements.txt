@@ -1,0 +1,5 @@
+faster-whisper>=1.0
+numpy>=1.26
+pypinyin>=0.51
+zhconv>=1.4
+av>=12

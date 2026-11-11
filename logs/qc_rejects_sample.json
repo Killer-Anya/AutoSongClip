@@ -1,0 +1,643 @@
+[
+ {
+  "what": "BV1Wc411S7gj 寻人启事",
+  "reason": "质检：同步行占比 41%（11/27 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.893,
+   "recall": 0.725,
+   "dense": 0,
+   "lines": 27,
+   "first": 1.6,
+   "last": 144.2,
+   "cut": 150.2,
+   "err_med": 0.005,
+   "err_p95": 0.005,
+   "err_hit": "11/27",
+   "err_rate": 0.407,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:23:29"
+ },
+ {
+  "what": "BV1Wc411S7gj 达尔文",
+  "reason": "质检：同步行占比 63%（17/27 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.7,
+   "dense": 0,
+   "lines": 27,
+   "first": 6.5,
+   "last": 215.7,
+   "cut": 220.0,
+   "err_med": 0.001,
+   "err_p95": 0.001,
+   "err_hit": "17/27",
+   "err_rate": 0.63,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:23:38"
+ },
+ {
+  "what": "BV1Wc411S7gj 橄榄树",
+  "reason": "质检：同步行占比 60%（9/15 在 ±2s 内）；末行后还有 23s 空档（疑似拖尾）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.878,
+   "dense": 0,
+   "lines": 15,
+   "first": 6.5,
+   "last": 246.8,
+   "cut": 270.0,
+   "err_med": 0.002,
+   "err_p95": 0.002,
+   "err_hit": "9/15",
+   "err_rate": 0.6,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:23:48"
+ },
+ {
+  "what": "BV1FQ4y1j7cU 若把你",
+  "reason": "门槛：歌词覆盖77%<80%；锚定81%<85%",
+  "metrics": {
+   "coverage": 0.769,
+   "lines": 20,
+   "anchor": 0.808,
+   "gap_reserved": 1
+  },
+  "at": "2026-11-10 00:23:50"
+ },
+ {
+  "what": "BV1FQ4y1j7cU 像我这样的人",
+  "reason": "门槛：锚定79%<85%",
+  "metrics": {
+   "coverage": 1.0,
+   "lines": 38,
+   "anchor": 0.789,
+   "gap_reserved": 1
+  },
+  "at": "2026-11-10 00:23:51"
+ },
+ {
+  "what": "BV1FQ4y1j7cU 袖手旁观",
+  "reason": "质检：同步行占比 78%（35/45 在 ±2s 内）；首行 8.8s 太晚",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.816,
+   "dense": 0,
+   "lines": 45,
+   "first": 8.8,
+   "last": 240.9,
+   "cut": 246.9,
+   "err_med": 0.001,
+   "err_p95": 0.001,
+   "err_hit": "35/45",
+   "err_rate": 0.778,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:23:55"
+ },
+ {
+  "what": "BV1Kt4y1o7K9 有没有",
+  "reason": "门槛：锚定83%<85%",
+  "metrics": {
+   "coverage": 0.931,
+   "lines": 27,
+   "anchor": 0.828,
+   "gap_reserved": 4
+  },
+  "at": "2026-11-10 00:24:00"
+ },
+ {
+  "what": "BV1Kt4y1o7K9 达尔文",
+  "reason": "质检：同步行占比 63%（17/27 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.7,
+   "dense": 0,
+   "lines": 27,
+   "first": 7.0,
+   "last": 216.2,
+   "cut": 222.2,
+   "err_med": 0.0,
+   "err_p95": 0.0,
+   "err_hit": "17/27",
+   "err_rate": 0.63,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:14"
+ },
+ {
+  "what": "BV1Kt4y1o7K9 红豆",
+  "reason": "质检：歌词文字召回 61%；同步行占比 54%（22/41 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.609,
+   "dense": 0,
+   "lines": 41,
+   "first": 0.0,
+   "last": 167.8,
+   "cut": 173.8,
+   "err_med": 0.005,
+   "err_p95": 0.005,
+   "err_hit": "22/41",
+   "err_rate": 0.537,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:26"
+ },
+ {
+  "what": "BV1Kt4y1o7K9 想着你的感觉",
+  "reason": "质检：同步行占比 79%（22/28 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.687,
+   "dense": 0,
+   "lines": 28,
+   "first": 0.1,
+   "last": 257.1,
+   "cut": 263.1,
+   "err_med": 0.003,
+   "err_p95": 0.003,
+   "err_hit": "22/28",
+   "err_rate": 0.786,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:28"
+ },
+ {
+  "what": "BV1PH4y1H7J7 无聊的",
+  "reason": "门槛：歌词覆盖76%<80%",
+  "metrics": {
+   "coverage": 0.759,
+   "lines": 22,
+   "anchor": 1.0,
+   "gap_reserved": 1
+  },
+  "at": "2026-11-10 00:24:34"
+ },
+ {
+  "what": "BV1PH4y1H7J7 修炼爱情",
+  "reason": "质检：同步行占比 70%（32/46 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.935,
+   "recall": 0.847,
+   "dense": 0,
+   "lines": 46,
+   "first": 6.5,
+   "last": 231.4,
+   "cut": 235.7,
+   "err_med": 0.001,
+   "err_p95": 0.001,
+   "err_hit": "32/46",
+   "err_rate": 0.696,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:36"
+ },
+ {
+  "what": "BV1PH4y1H7J7 光年之外",
+  "reason": "质检：同步行占比 61%（34/56 在 ±2s 内）；行级中位误差 1.72s；行级95分位误差 3.50s",
+  "metrics": {
+   "anchor": 0.912,
+   "recall": 0.685,
+   "dense": 0,
+   "lines": 56,
+   "first": 6.5,
+   "last": 232.1,
+   "cut": 233.2,
+   "err_med": 1.72,
+   "err_p95": 3.505,
+   "err_hit": "34/56",
+   "err_rate": 0.607,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:38"
+ },
+ {
+  "what": "BV1PH4y1H7J7 空白格",
+  "reason": "门槛：歌词覆盖64%<80%",
+  "metrics": {
+   "coverage": 0.639,
+   "lines": 23,
+   "anchor": 1.0,
+   "gap_reserved": 0
+  },
+  "at": "2026-11-10 00:24:46"
+ },
+ {
+  "what": "BV12w4m1Q7UQ 明明就",
+  "reason": "质检：首行 19.9s 太晚",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.848,
+   "dense": 0,
+   "lines": 41,
+   "first": 19.9,
+   "last": 246.6,
+   "cut": 252.6,
+   "err_med": 0.0,
+   "err_p95": 0.0,
+   "err_hit": "39/41",
+   "err_rate": 0.951,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:48"
+ },
+ {
+  "what": "BV12w4m1Q7UQ 你就不要想起我",
+  "reason": "质检：首行 8.4s 太晚",
+  "metrics": {
+   "anchor": 0.973,
+   "recall": 0.8,
+   "dense": 0,
+   "lines": 36,
+   "first": 8.4,
+   "last": 226.7,
+   "cut": 237.7,
+   "err_med": 0.003,
+   "err_p95": 0.003,
+   "err_hit": "34/36",
+   "err_rate": 0.944,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:51"
+ },
+ {
+  "what": "BV12w4m1Q7UQ 修炼爱情",
+  "reason": "质检：同步行占比 70%（32/46 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.87,
+   "recall": 0.885,
+   "dense": 0,
+   "lines": 46,
+   "first": 6.5,
+   "last": 281.1,
+   "cut": 283.5,
+   "err_med": 0.001,
+   "err_p95": 0.001,
+   "err_hit": "32/46",
+   "err_rate": 0.696,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:55"
+ },
+ {
+  "what": "BV12w4m1Q7UQ 没离开过",
+  "reason": "门槛：歌词覆盖67%<80%；锚定58%<85%",
+  "metrics": {
+   "coverage": 0.667,
+   "lines": 16,
+   "anchor": 0.583,
+   "gap_reserved": 3
+  },
+  "at": "2026-11-10 00:24:56"
+ },
+ {
+  "what": "BV12w4m1Q7UQ 火烧的寂寞",
+  "reason": "质检：同步行占比 79%（22/28 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.964,
+   "recall": 0.8,
+   "dense": 0,
+   "lines": 28,
+   "first": 6.0,
+   "last": 201.4,
+   "cut": 210.7,
+   "err_med": 0.002,
+   "err_p95": 0.002,
+   "err_hit": "22/28",
+   "err_rate": 0.786,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:24:58"
+ },
+ {
+  "what": "BV1pb421J7qZ 布拉格广场",
+  "reason": "门槛：歌词覆盖61%<80%；锚定57%<85%",
+  "metrics": {
+   "coverage": 0.612,
+   "lines": 41,
+   "anchor": 0.567,
+   "gap_reserved": 3
+  },
+  "at": "2026-11-10 00:25:04"
+ },
+ {
+  "what": "BV1mdtee6EDT 红颜",
+  "reason": "质检：末行后还有 24s 空档（疑似拖尾）",
+  "metrics": {
+   "anchor": 0.912,
+   "recall": 0.782,
+   "dense": 0,
+   "lines": 31,
+   "first": 7.6,
+   "last": 188.9,
+   "cut": 212.9,
+   "err_med": 0.003,
+   "err_p95": 0.003,
+   "err_hit": "28/31",
+   "err_rate": 0.903,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:25:07"
+ },
+ {
+  "what": "BV1mdtee6EDT 荷塘月色",
+  "reason": "门槛：锚定82%<85%",
+  "metrics": {
+   "coverage": 0.909,
+   "lines": 40,
+   "anchor": 0.818,
+   "gap_reserved": 2
+  },
+  "at": "2026-11-10 00:25:08"
+ },
+ {
+  "what": "BV1mdtee6EDT 说爱你",
+  "reason": "质检：同步行占比 70%（38/54 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.852,
+   "recall": 0.81,
+   "dense": 0,
+   "lines": 54,
+   "first": 5.0,
+   "last": 224.1,
+   "cut": 230.1,
+   "err_med": 0.002,
+   "err_p95": 0.002,
+   "err_hit": "38/54",
+   "err_rate": 0.704,
+   "extra": 0
+  },
+  "at": "2026-11-10 00:25:11"
+ },
+ {
+  "what": "BV1tZsfevEHc 吻得太逼真",
+  "reason": "质检：同步行占比 32%（26/81 在 ±2s 内）；行级中位误差 2.49s；行级95分位误差 3.59s",
+  "metrics": {
+   "anchor": 0.881,
+   "recall": 0.779,
+   "dense": 0,
+   "lines": 81,
+   "first": 6.5,
+   "last": 255.7,
+   "cut": 256.9,
+   "err_med": 2.487,
+   "err_p95": 3.592,
+   "err_hit": "26/81",
+   "err_rate": 0.321,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:07:14"
+ },
+ {
+  "what": "BV1tZsfevEHc 吻得太逼真",
+  "reason": "质检：同步行占比 32%（26/81 在 ±2s 内）；行级中位误差 2.49s；行级95分位误差 3.59s",
+  "metrics": {
+   "anchor": 0.881,
+   "recall": 0.779,
+   "dense": 0,
+   "lines": 81,
+   "first": 6.5,
+   "last": 255.7,
+   "cut": 256.9,
+   "err_med": 2.487,
+   "err_p95": 3.592,
+   "err_hit": "26/81",
+   "err_rate": 0.321,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:07:16"
+ },
+ {
+  "what": "BV1tZsfevEHc 佤写不来情歌2024",
+  "reason": "质检：歌词文字召回 23%；行级误差无法统计（转写里找不到歌词音节）",
+  "metrics": {
+   "anchor": 0.912,
+   "recall": 0.229,
+   "dense": 0,
+   "lines": 34,
+   "first": 5.0,
+   "last": 90.1,
+   "cut": 91.2,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/34",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:07:17"
+ },
+ {
+  "what": "BV1tZsfevEHc 我说",
+  "reason": "窗口过短 71s",
+  "metrics": {},
+  "at": "2026-11-10 01:07:18"
+ },
+ {
+  "what": "BV1tZsfevEHc 吻的太逼真",
+  "reason": "质检：同步行占比 79%（31/39 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.766,
+   "dense": 0,
+   "lines": 39,
+   "first": 6.5,
+   "last": 244.3,
+   "cut": 250.3,
+   "err_med": 0.003,
+   "err_p95": 0.003,
+   "err_hit": "31/39",
+   "err_rate": 0.795,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:08:21"
+ },
+ {
+  "what": "BV1tZsfevEHc 佤写不来情歌2024",
+  "reason": "质检：歌词文字召回 25%；行级误差无法统计（转写里找不到歌词音节）",
+  "metrics": {
+   "anchor": 0.971,
+   "recall": 0.255,
+   "dense": 0,
+   "lines": 33,
+   "first": 4.5,
+   "last": 170.0,
+   "cut": 171.2,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/33",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:08:23"
+ },
+ {
+  "what": "BV1tZsfevEHc 我说",
+  "reason": "质检：歌词文字召回 45%；行级误差无法统计（转写里找不到歌词音节）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.446,
+   "dense": 0,
+   "lines": 17,
+   "first": 0.6,
+   "last": 132.4,
+   "cut": 139.3,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/15",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 01:08:24"
+ },
+ {
+  "what": "BV1tZsfevEHc 听见下雨的声音 (Live版)",
+  "reason": "门槛：锚定57%<85%",
+  "metrics": {
+   "coverage": 0.8,
+   "lines": 28,
+   "anchor": 0.571,
+   "gap_reserved": 0
+  },
+  "at": "2026-11-10 01:09:49"
+ },
+ {
+  "what": "2023-11-26 能不能给我最后一个吻.wav",
+  "reason": "质检：歌词文字召回 42%；同步行占比 2%（1/54 在 ±2s 内）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.419,
+   "dense": 0,
+   "lines": 54,
+   "first": 4.5,
+   "last": 250.4,
+   "cut": 258.4,
+   "err_med": 0.002,
+   "err_p95": 0.002,
+   "err_hit": "1/54",
+   "err_rate": 0.019,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:11:28"
+ },
+ {
+  "what": "2023-11-26 光亮",
+  "reason": "质检：歌词文字召回 23%；同步行占比 22%（9/40 在 ±2s 内）；首行 18.6s 太晚",
+  "metrics": {
+   "anchor": 0.854,
+   "recall": 0.229,
+   "dense": 0,
+   "lines": 40,
+   "first": 18.6,
+   "last": 138.2,
+   "cut": 149.2,
+   "err_med": 0.003,
+   "err_p95": 0.157,
+   "err_hit": "9/40",
+   "err_rate": 0.225,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:11:35"
+ },
+ {
+  "what": "2023-11-26 美人鱼",
+  "reason": "质检：歌词文字召回 27%；行级误差无法统计（转写里找不到歌词音节）；首行 18.8s 太晚",
+  "metrics": {
+   "anchor": 0.923,
+   "recall": 0.273,
+   "dense": 0,
+   "lines": 51,
+   "first": 18.8,
+   "last": 118.5,
+   "cut": 126.9,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/51",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:12:15"
+ },
+ {
+  "what": "2023-11-26 有没有一刻想起我（烟嗓版）",
+  "reason": "质检：歌词文字召回 27%；行级误差无法统计（转写里找不到歌词音节）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.267,
+   "dense": 0,
+   "lines": 59,
+   "first": 5.5,
+   "last": 175.5,
+   "cut": 177.9,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/59",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:12:18"
+ },
+ {
+  "what": "2023-11-26 崇拜",
+  "reason": "质检：同步行占比 76%（34/45 在 ±2s 内）",
+  "metrics": {
+   "anchor": 0.867,
+   "recall": 0.773,
+   "dense": 0,
+   "lines": 45,
+   "first": 7.2,
+   "last": 256.6,
+   "cut": 264.9,
+   "err_med": 0.002,
+   "err_p95": 0.002,
+   "err_hit": "34/45",
+   "err_rate": 0.756,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:12:23"
+ },
+ {
+  "what": "2023-11-26 你还真是不可爱啊，明明就是只兔子。",
+  "reason": "门槛：歌词行太少",
+  "metrics": {
+   "coverage": 1.0,
+   "lines": 2,
+   "anchor": 1.0,
+   "gap_reserved": 1
+  },
+  "at": "2026-11-10 02:12:27"
+ },
+ {
+  "what": "2023-11-26 想做你的小猫⦮. ̫ .⦯",
+  "reason": "质检：歌词文字召回 62%；行级误差无法统计（转写里找不到歌词音节）；末行后还有 79s 空档（疑似拖尾）",
+  "metrics": {
+   "anchor": 1.0,
+   "recall": 0.625,
+   "dense": 0,
+   "lines": 5,
+   "first": 4.0,
+   "last": 182.4,
+   "cut": 261.6,
+   "err_med": null,
+   "err_p95": null,
+   "err_hit": "0/5",
+   "err_rate": 0.0,
+   "extra": 0
+  },
+  "at": "2026-11-10 02:12:33"
+ },
+ {
+  "what": "2023-11-26",
+  "reason": "识曲不确定：只有 1 路证据且吻合度 0.56<0.60：阳光下的星星",
+  "metrics": {},
+  "at": "2026-11-10 02:12:33"
+ },
+ {
+  "what": "2023-11-26",
+  "reason": "识曲不确定：候选 3 个，最高分 0.00 低于 0.36",
+  "metrics": {},
+  "at": "2026-11-10 02:12:58"
+ }
+]

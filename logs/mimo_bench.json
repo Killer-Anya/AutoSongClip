@@ -1,0 +1,88 @@
+{
+ "speed": [
+  {
+   "dur": 20,
+   "sec": 1.2,
+   "tokens": 216,
+   "chars": 47
+  },
+  {
+   "dur": 60,
+   "sec": 4.0,
+   "tokens": 536,
+   "chars": 226
+  },
+  {
+   "dur": 120,
+   "sec": 8.3,
+   "tokens": 993,
+   "chars": 413
+  },
+  {
+   "dur": 300,
+   "sec": 21.6,
+   "tokens": 2610,
+   "chars": 1123
+  }
+ ],
+ "discriminate": [
+  {
+   "case": "歌A 不亏不欠",
+   "singing": true,
+   "conf": 1.0,
+   "note": "有旋律、有伴奏、连续演唱",
+   "sec": 1.1
+  },
+  {
+   "case": "歌B 天黑黑",
+   "singing": true,
+   "conf": 1.0,
+   "note": "有旋律、有伴奏，全程连续演唱",
+   "sec": 1.2
+  },
+  {
+   "case": "歌C 雨爱",
+   "singing": true,
+   "conf": 1.0,
+   "note": "有旋律、有伴奏、连续演唱",
+   "sec": 1.1
+  },
+  {
+   "case": "说话1",
+   "singing": true,
+   "conf": 0.7,
+   "note": "音频以有旋律的演唱为主，中间夹杂少量口语互动，演唱占比超过60%",
+   "sec": 1.3
+  },
+  {
+   "case": "说话2",
+   "singing": true,
+   "conf": 0.7,
+   "note": "音频以带伴奏的连续演唱为主，中间夹杂少量口语说话，演唱占比超过60%",
+   "sec": 1.3
+  },
+  {
+   "case": "说话3",
+   "singing": true,
+   "conf": 0.7,
+   "note": "音频以连续演唱为主，中间夹杂少量口语交谈，演唱占比超过60%",
+   "sec": 1.2
+  }
+ ],
+ "boundary": {
+  "raw": "```json\n{\"has_singing\": true, \"singing_start_sec\": 23.0, \"note\": \"音频前23秒为纯器乐演奏，随后在23秒左右开始出现人声演唱。\"}\n```",
+  "tokens": 374
+ },
+ "partial": {
+  "raw": "{\"complete_song\": false, \"reason\": \"音频从高音吟唱和副歌部分开始，且结尾处突然切入另一首歌的片段，明显是截取的片段而非完整歌曲。\"}",
+  "tokens": 480
+ },
+ "mixed": {
+  "raw": "{\"mixed\": false, \"songs_heard\": 1, \"reason\": \"整段音频为同一首歌曲的连续演唱，旋律与歌词保持一致，无拼接痕迹。\"}",
+  "tokens": 348
+ },
+ "parallel": {
+  "sec": 3.3,
+  "n": 3
+ }
+}

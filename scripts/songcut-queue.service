@@ -1,0 +1,18 @@
+# systemd 单元示例：把队列与聊天机器人解耦，机器人重启不影响任务
+[Unit]
+Description=SongCut queue worker (歌切队列)
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/path/to/songcut
+Environment=PYTHONPATH=/path/to/songcut/venv/lib/python3.12/site-packages
+ExecStart=/usr/bin/python3 /path/to/songcut/pipeline/run_v3.py
+Restart=always
+RestartSec=30
+StandardOutput=append:/path/to/songcut/logs/run_v3_service.log
+StandardError=append:/path/to/songcut/logs/run_v3_service.log
+
+[Install]
+WantedBy=multi-user.target
