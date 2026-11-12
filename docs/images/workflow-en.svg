@@ -3,12 +3,12 @@
   <desc id="description">Enter a Bilibili recording, fetch and validate its audio, then transcribe and find singing. Identify, cut and align each candidate. Log failed quality checks. Package passing cuts and publish after manual approval. Keep unapproved cuts pending.</desc>
   <rect width="1340" height="632" rx="16" fill="#10151c"/>
   <g id="phase-1">
-    <rect x="24" y="80" width="332" height="412" rx="12" fill="#1c242d" stroke="#485562"/>
-    <text x="190" y="110" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Source and segmentation</text>
+    <rect x="24" y="16" width="332" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="190" y="46" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Source and segmentation</text>
   </g>
   <g id="phase-2">
-    <rect x="400" y="48" width="332" height="444" rx="12" fill="#1c242d" stroke="#485562"/>
-    <text x="566" y="78" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Identify, cut and align</text>
+    <rect x="400" y="16" width="332" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="566" y="46" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Identify, cut and align</text>
   </g>
   <g id="phase-3">
     <rect x="776" y="16" width="540" height="600" rx="12" fill="#1c242d" stroke="#485562"/>

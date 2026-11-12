@@ -3,12 +3,12 @@
   <desc id="description">输入 B 站录播后获取并校验音轨，转写并定位演唱。逐段识曲、切片、排轴并质检。未通过的候选记录原因。通过的成品打包并经人工审核后发布，其余保留待审核。</desc>
   <rect width="1340" height="632" rx="16" fill="#10151c"/>
   <g id="phase-1">
-    <rect x="24" y="80" width="332" height="412" rx="12" fill="#1c242d" stroke="#485562"/>
-    <text x="190" y="110" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">音轨获取与演唱检测</text>
+    <rect x="24" y="16" width="332" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="190" y="46" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">音轨获取与演唱检测</text>
   </g>
   <g id="phase-2">
-    <rect x="400" y="48" width="332" height="444" rx="12" fill="#1c242d" stroke="#485562"/>
-    <text x="566" y="78" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">识曲、精切与排轴</text>
+    <rect x="400" y="16" width="332" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="566" y="46" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">识曲、精切与排轴</text>
   </g>
   <g id="phase-3">
     <rect x="776" y="16" width="540" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
