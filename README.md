@@ -33,25 +33,41 @@ The screenshots were captured from the deployed V1 player on November 10, 2026. 
 ## Workflow
 
 ```mermaid
-flowchart LR
-    input["Recording URL"] --> download["Fetch audio"]
-    download --> transcribe["Transcribe and segment"]
-    transcribe --> cut["Identify and cut"]
-    cut --> align["Align lyrics and verify"]
-    align --> package["Package clips"]
-    package --> publish["Review and publish"]
+---
+config:
+  flowchart:
+    nodeSpacing: 22
+    rankSpacing: 26
+---
+flowchart TB
+    accTitle: From a Bilibili recording to the web song library
+    accDescr: The workflow extracts audio, finds performances, identifies songs, cuts audio and aligns lyrics. Rejected candidates are logged. Passing clips are packaged for manual review before publication.
+    recording(["Bilibili recording URL or BV ID · select a part"])
+    fetch["Fetch and check source audio<br/>Highest available DASH bitrate · stereo AAC · 44.1 or 48 kHz"]
+    detect["Transcribe and detect singing<br/>Whisper small on CPU · cache word timestamps<br/>Singing and speech labels cover ≥95% of transcript segments"]
+    identify["Identify songs and retrieve lyrics<br/>NetEase lyric search · pinyin matching<br/>Candidate recall ≥40% · alignment ≥60% where calculable"]
+    cut["Refine cut points and preserve the source audio<br/>Look for ≥500 ms of silence · FFmpeg stream copy<br/>Cut duration error ≤0.15 s · labeled speech ≤8%"]
+    align["Align lyrics and check quality<br/>Whisper word timestamps + pinyin DTW<br/>Lyric coverage ≥80% · anchors ≥85%<br/>ASR-relative timing error ≤0.30 s median and ≤0.90 s P95<br/>Optional MiMo audio spot checks"]
+    gate{"Candidate passes quality checks?"}
+    rejection["Reject the candidate<br/>Record the failed check"]
+    package["Package for manual review<br/>M4A audio · LRC lyrics · ASS subtitles · pending index"]
+    library(["Review playback and timing · publish to the web library"])
+
+    recording --> fetch --> detect --> identify --> cut --> align --> gate
+    gate -->|Pass| package --> library
+    gate -->|Fail| rejection
+
+    classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
+    classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c
+    classDef withheld fill:#fceeee,stroke:#a75b60,color:#642a30
+    classDef published fill:#e8f6ed,stroke:#438461,color:#18452e
+    class recording entry
+    class gate checkpoint
+    class rejection withheld
+    class library published
 ```
 
-| Stage | How it works | Output and checks |
-| --- | --- | --- |
-| 1. Fetch the audio track | Accept a Bilibili video URL or BV ID, resolve its part, and choose the highest-bandwidth DASH audio track available. | Preserve the original M4A. The source check requires AAC, 44.1 or 48 kHz, and stereo, with at least 128 kbps when bitrate is available. |
-| 2. Transcribe and locate performances | Decode an analysis copy at 16 kHz mono. Run faster-whisper small in 300-second chunks with CPU INT8, cache sentence and word timestamps, and label singing and speech with a text model. | Store reusable JSONL. Valid labels must cover at least 95% of transcript sentences. Nearby singing segments are grouped, and the V2 online path skips candidates under 90 seconds. |
-| 3. Identify songs and retrieve lyrics | Search NetEase Cloud Music using several transcript excerpts. Rank candidates by text similarity, lyric recall, and pinyin alignment. Use text review to help judge identification, completeness, duets, and talk. | Resolve the title, original performer, and reference lyrics. The identification stage uses a 40% recall threshold and a 60% alignment threshold. |
-| 4. Refine the cut | Use the first and last singing labels to find nearby silence, measured with short RMS windows. The silence search requires at least 500 ms. FFmpeg stream-copies the source audio. | The V2 online path starts with 3 seconds of lead-in and 4 seconds of tail. It checks codec, sample rate, channels, a cut-duration tolerance of 0.15 seconds, and up to 8% labeled speech. |
-| 5. Align and review | Generate LRC from Whisper word timestamps and pinyin dynamic time warping (DTW). Reuse the full transcript where possible and transcribe the cut again when there are too few segments. MiMo can inspect three clips of about 20 seconds for song identity, talk, and splicing. | Require ≥85% anchors, ≥80% lyric coverage, and ≥66% Chinese-character recall. The median timing error is limited to 0.30 seconds and P95 to 0.90 seconds against ASR timestamps. Audio review has its own status and can be checked manually when unavailable. |
-| 6. Package and publish | Write M4A, line-timed LRC, word-highlighted ASS, and a pending catalog. After review, merge approved entries into the published library and rebuild the page. | The player offers search, language and date filters, and synchronized lyrics. Check playback, lyric correspondence, and subtitle rendering before publishing. |
-
-See the [quality report](docs/指标与质量报告.md#english-summary) for sample results and methodology. The [architecture notes](docs/架构说明.md) cover the entry points and data files.
+[Quality requirements](docs/质量要求.md#english) · [Measured results](docs/指标与质量报告.md#english-summary) · [Architecture notes](docs/架构说明.md)
 
 ## Quick start
 

@@ -33,25 +33,41 @@
 ## 处理流程
 
 ```mermaid
-flowchart LR
-    input["B 站录播链接"] --> download["获取音轨"]
-    download --> transcribe["转写与演唱检测"]
-    transcribe --> cut["识曲与精调切点"]
-    cut --> align["歌词对齐与质检"]
-    align --> package["打包待审核成品"]
-    package --> publish["审核后上架"]
+---
+config:
+  flowchart:
+    nodeSpacing: 22
+    rankSpacing: 26
+---
+flowchart TB
+    accTitle: 从 B 站录播到网页曲库
+    accDescr: 依次获取音轨、检测演唱、识曲、切片和对齐歌词。未达标候选记录拦截原因，通过的成品由人工审核后发布。
+    recording(["B 站录播链接或 BV 号 · 选择分 P"])
+    fetch["获取并校验音轨<br/>选最高可用带宽的 DASH 音轨 · 双声道 AAC · 44.1 或 48 kHz"]
+    detect["转写并定位演唱<br/>本地 Whisper small · 缓存词级时间戳<br/>演唱与说话标签覆盖 ≥95% 的转写句子"]
+    identify["识曲并检索歌词<br/>网易云歌词检索 · 拼音匹配<br/>候选召回 ≥40% · 可计算时对齐率 ≥60%"]
+    cut["精调切点并保留原码流<br/>寻找 ≥500 ms 的静音 · FFmpeg 流复制<br/>切片时长偏差 ≤0.15 s · 标注说话占比 ≤8%"]
+    align["对齐歌词并质检<br/>Whisper 词级时间戳 + 拼音 DTW<br/>歌词覆盖 ≥80% · 锚定 ≥85%<br/>相对 ASR 的时间误差中位 ≤0.30 s · P95 ≤0.90 s<br/>可选 MiMo 音频抽查"]
+    gate{"候选通过质检？"}
+    rejection["拦截候选<br/>记录未通过的检查项"]
+    package["打包待人工审核<br/>M4A 音频 · LRC 歌词 · ASS 字幕 · 待审核索引"]
+    library(["人工核对播放与时间轴 · 发布至网页曲库"])
+
+    recording --> fetch --> detect --> identify --> cut --> align --> gate
+    gate -->|通过| package --> library
+    gate -->|未通过| rejection
+
+    classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
+    classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c
+    classDef withheld fill:#fceeee,stroke:#a75b60,color:#642a30
+    classDef published fill:#e8f6ed,stroke:#438461,color:#18452e
+    class recording entry
+    class gate checkpoint
+    class rejection withheld
+    class library published
 ```
 
-| 阶段 | 具体做法 | 输出与质量检查 |
-| --- | --- | --- |
-| 1. 获取录播音轨 | 粘贴 B 站录播链接或输入 BV 号。解析链接中的分 P，从可用 DASH 音轨里选带宽最高的一档。 | 保留原始 M4A。源音轨要求 AAC、44.1 或 48 kHz、双声道、码率可读取时须 ≥128 kbps。 |
-| 2. 转写并圈出演唱区间 | 解码为 16 kHz 单声道分析音频。faster-whisper small 用 CPU INT8，每 300 秒处理一块并缓存句级和词级时间。文本模型逐句标注演唱和说话。 | 生成可复用的 JSONL 转写。文本分类有效标签须覆盖至少 95% 的转写句子。按时间合并演唱区间，V2 在线流程跳过短于 90 秒的候选。 |
-| 3. 识曲和核对歌词 | 从转写抽取多个歌词片段，检索网易云音乐，再按文本相似度、歌词召回和拼音对齐得分排序。文本模型辅助判断识曲结果、合唱、杂谈和片段完整性。 | 产出歌名、原唱和参考歌词。自动识曲流程对歌词召回和对齐率设置了 40% 和 60% 的门槛。 |
-| 4. 精调切点 | 根据演唱标签定位首末演唱，再用短窗 RMS 测量在附近寻找至少 500 ms 的静音。用 FFmpeg 流复制保留原音轨编码。 | V2 在线流程以首唱前 3 秒、末唱后 4 秒为初始留白。成品检查编码、采样率、声道及 ≤0.15 秒的切片时长偏差，在线片段内的说话占比须 ≤8%。 |
-| 5. 对齐歌词并复核 | 使用 Whisper 词级时间戳与拼音动态时间规整（DTW）生成 LRC。先复用全场转写，片段内句子太少时单独重转。MiMo 可抽查片段前、中、后各约 20 秒，判断同曲、杂谈或拼接。 | 歌词锚定 ≥85%、覆盖 ≥80%、汉字召回 ≥66%。时间误差的中位 ≤0.30 秒、P95 ≤0.90 秒，参照 ASR 时间戳。音频复核单独记录状态，缺失时由维护者人工抽听。 |
-| 6. 打包与发布 | 输出 M4A、逐行 LRC、逐字 ASS 和待审核索引。审核后合并到正式曲库并重建网页。 | 播放器提供搜索、语言和日期筛选及同步歌词。上线前检查三件套，确认音频可播放、歌词对应正确演唱、字幕可渲染。 |
-
-实测样本和统计口径见 [指标与质量报告](docs/指标与质量报告.md)。代码入口和数据文件见 [架构说明](docs/架构说明.md)。
+[质量要求](docs/质量要求.md) · [实测结果](docs/指标与质量报告.md) · [架构说明](docs/架构说明.md)
 
 ## 快速开始
 
