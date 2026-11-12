@@ -32,9 +32,9 @@ The screenshots were captured from the deployed V1 player on November 10, 2026. 
 
 ## Workflow
 
-[![The flow starts with a Bilibili recording. Invalid audio ends the session. Each detected singing segment is identified, cut, aligned and checked. A failed candidate is logged and rejected. Passing clips are packaged for manual review. Approved clips are published and unapproved clips remain pending.](docs/images/workflow-en.svg)](docs/images/workflow-en.svg)
+[![Enter a Bilibili recording, fetch and validate its audio, then transcribe and find singing. Identify, cut and align each candidate. Log failed quality checks. Package passing cuts and publish after manual approval. Keep unapproved cuts pending.](docs/images/workflow-en.svg)](docs/images/workflow-en.svg)
 
-Symbols follow [ISO 5807:1985](https://www.iso.org/standard/11955.html). Matching circles (A and B) continue the flow in the next phase.
+Flowchart symbols follow [ISO 5807:1985](https://www.iso.org/standard/11955.html).
 
 [Quality requirements](docs/质量要求.md#english) · [Measured results](docs/指标与质量报告.md#english-summary) · [Architecture notes](docs/架构说明.md)
 

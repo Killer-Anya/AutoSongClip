@@ -32,9 +32,9 @@
 
 ## 处理流程
 
-[![输入 B 站录播后校验源音轨，不合格则记录原因并结束该场。逐段识曲、切片、对齐歌词并质检，未通过的候选会被拦截并记录原因。通过的成品打包待审，人工审核同意后发布，其余保留待审。](docs/images/workflow-zh-CN.svg)](docs/images/workflow-zh-CN.svg)
+[![输入 B 站录播后获取并校验音轨，转写并定位演唱。逐段识曲、切片、排轴并质检。未通过的候选记录原因。通过的成品打包并经人工审核后发布，其余保留待审核。](docs/images/workflow-zh-CN.svg)](docs/images/workflow-zh-CN.svg)
 
-符号与连线参照 [ISO 5807:1985](https://www.iso.org/standard/11955.html)。同字母圆形连接点（A、B）表示续接到下一阶段。
+流程图符号参照 [ISO 5807:1985](https://www.iso.org/standard/11955.html)。
 
 [质量要求](docs/质量要求.md) · [实测结果](docs/指标与质量报告.md) · [架构说明](docs/架构说明.md)
 

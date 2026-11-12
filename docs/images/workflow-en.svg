@@ -1,249 +1,180 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1432" height="820" viewBox="0 0 1432 820" role="img" aria-labelledby="title description" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
-  <title id="title">AutoSongClip engineering flowchart</title>
-  <desc id="description">The flow starts with a Bilibili recording. Invalid audio ends the session. Each detected singing segment is identified, cut, aligned and checked. A failed candidate is logged and rejected. Passing clips are packaged for manual review. Approved clips are published and unapproved clips remain pending.</desc>
-  <rect width="1432" height="820" rx="18" fill="#10151d" />
+<svg xmlns="http://www.w3.org/2000/svg" width="1340" height="632" viewBox="0 0 1340 632" role="img" aria-labelledby="title description" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+  <title id="title">From recording to web song library</title>
+  <desc id="description">Enter a Bilibili recording, fetch and validate its audio, then transcribe and find singing. Identify, cut and align each candidate. Log failed quality checks. Package passing cuts and publish after manual approval. Keep unapproved cuts pending.</desc>
+  <rect width="1340" height="632" rx="16" fill="#10151c"/>
   <g id="phase-1">
-    <rect x="24" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
-    <text x="248" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">Source and segmentation</text>
+    <rect x="24" y="80" width="332" height="412" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="190" y="110" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Source and segmentation</text>
   </g>
   <g id="phase-2">
-    <rect x="492" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
-    <text x="716" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">Identify, cut and align</text>
-    <text x="716" y="73" fill="#b9cadb" font-size="13" font-weight="400" text-anchor="middle">Process each detected singing segment</text>
+    <rect x="400" y="48" width="332" height="444" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="566" y="78" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Identify, cut and align</text>
   </g>
   <g id="phase-3">
-    <rect x="960" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
-    <text x="1184" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">Review and publish</text>
+    <rect x="776" y="16" width="540" height="600" rx="12" fill="#1c242d" stroke="#485562"/>
+    <text x="1046" y="46" fill="#f0f4f8" font-size="21" font-weight="700" text-anchor="middle">Review and publish</text>
   </g>
+  <text x="926" y="65" fill="#bdc8d4" font-size="13" font-weight="400" text-anchor="middle">Optional MiMo audio check</text>
   <g id="flow-lines">
-    <g data-from="start" data-to="input">
-      <polyline points="140,121 140,140" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,132 140,140 136,132" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="start" data-to="source">
+      <polyline points="190,170 190,186" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="186,179 190,186 194,179" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="input" data-to="fetch">
-      <polyline points="140,208 140,230" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,222 140,230 136,222" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="source" data-to="audio">
+      <polyline points="190,246 190,266" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="186,259 190,266 194,259" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="fetch" data-to="source-valid">
-      <polyline points="140,298 140,327" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,319 140,327 136,319" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="audio" data-to="transcribe">
+      <polyline points="190,340 190,364" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="186,357 190,364 194,357" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <text x="149" y="437" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">Yes</text>
-    <g data-from="source-valid" data-to="transcribe">
-      <polyline points="140,415 140,449" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,441 140,449 136,441" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <g data-from="transcribe" data-to="detect">
-      <polyline points="140,517 140,548" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,540 140,548 136,540" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <g data-from="detect" data-to="a-out">
-      <polyline points="140,616 140,681" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="144,673 140,681 136,673" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <g data-from="a-in" data-to="identify">
-      <polyline points="608,114 608,149" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,141 608,149 604,141" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="transcribe" data-to="identify">
+      <polyline points="304,408 378,408 378,149 452,149" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="445,145 452,149 445,153" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
     <g data-from="identify" data-to="cut">
-      <polyline points="608,217 608,247" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,239 608,247 604,239" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="566,186 566,219" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="562,212 566,219 570,212" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
     <g data-from="cut" data-to="align">
-      <polyline points="608,315 608,345" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,337 608,345 604,337" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="566,307 566,348" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="562,341 566,348 570,341" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="align" data-to="check">
-      <polyline points="608,413 608,443" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,435 608,443 604,435" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="align" data-to="quality">
+      <polyline points="680,399 754,399 754,122 812,122" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="805,118 812,122 805,126" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="check" data-to="quality-pass">
-      <polyline points="608,511 608,536" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,528 608,536 604,528" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="quality" data-to="reject-log">
+      <polyline points="1040,122 1068,122" fill="none" stroke="#e5a0aa" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="1061,118 1068,122 1061,126" fill="none" stroke="#e5a0aa" stroke-width="1.6" stroke-linejoin="round"/>
+      <text x="1054" y="112" fill="#e5a0aa" font-size="13" font-weight="700" text-anchor="middle">No</text>
     </g>
-    <text x="617" y="657" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">Yes</text>
-    <g data-from="quality-pass" data-to="b-out">
-      <polyline points="608,624 608,681" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="612,673 608,681 604,673" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="reject-log" data-to="rejected">
+      <polyline points="1182,155 1182,205" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="1178,198 1182,205 1186,198" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="b-in" data-to="package">
-      <polyline points="1076,114 1076,149" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,141 1076,149 1072,141" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="quality" data-to="package">
+      <polyline points="926,170 926,197" fill="none" stroke="#a3ccaf" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="922,190 926,197 930,190" fill="none" stroke="#a3ccaf" stroke-width="1.6" stroke-linejoin="round"/>
+      <text x="940" y="187" fill="#a3ccaf" font-size="13" font-weight="700" text-anchor="start">Yes</text>
     </g>
-    <g data-from="package" data-to="deliverables">
-      <polyline points="1076,217 1076,247" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,239 1076,247 1072,239" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="package" data-to="files">
+      <polyline points="926,273 926,289" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="922,282 926,289 930,282" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="deliverables" data-to="manual-review">
-      <polyline points="1076,315 1076,345" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,337 1076,345 1072,337" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="files" data-to="review">
+      <polyline points="926,343 926,360" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="922,353 926,360 930,353" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <g data-from="manual-review" data-to="approval">
-      <polyline points="1076,413 1076,433" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,425 1076,433 1072,425" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="review" data-to="approval">
+      <polyline points="926,420 926,438" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="922,431 926,438 930,431" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
-    <text x="1085" y="538" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">Yes</text>
+    <g data-from="approval" data-to="held">
+      <polyline points="926,534 926,553" fill="none" stroke="#e5a0aa" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="922,546 926,553 930,546" fill="none" stroke="#e5a0aa" stroke-width="1.6" stroke-linejoin="round"/>
+      <text x="940" y="547" fill="#e5a0aa" font-size="13" font-weight="700" text-anchor="start">No</text>
+    </g>
     <g data-from="approval" data-to="publish">
-      <polyline points="1076,521 1076,546" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,538 1076,546 1072,538" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1040,486 1068,486" fill="none" stroke="#a3ccaf" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="1061,482 1068,486 1061,490" fill="none" stroke="#a3ccaf" stroke-width="1.6" stroke-linejoin="round"/>
+      <text x="1054" y="476" fill="#a3ccaf" font-size="13" font-weight="700" text-anchor="middle">Yes</text>
     </g>
-    <g data-from="publish" data-to="publish-end">
-      <polyline points="1076,614 1076,674" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1080,666 1076,674 1072,666" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <text x="249" y="362" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">No</text>
-    <g data-from="source-valid" data-to="source-log">
-      <polyline points="236,371 356,371 356,430" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="360,422 356,430 352,422" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <g data-from="source-log" data-to="source-end">
-      <polyline points="356,498 356,544" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="360,536 356,544 352,536" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <text x="717" y="571" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">No</text>
-    <g data-from="quality-pass" data-to="candidate-log">
-      <polyline points="704,580 824,580 824,631" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="828,623 824,631 820,623" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <g data-from="candidate-log" data-to="candidate-end">
-      <polyline points="824,699 824,731" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="828,723 824,731 820,723" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
-    </g>
-    <text x="1185" y="468" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">No</text>
-    <g data-from="approval" data-to="hold-end">
-      <polyline points="1172,477 1292,477 1292,551" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
-      <polyline points="1296,543 1292,551 1288,543" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+    <g data-from="publish" data-to="published">
+      <polyline points="1182,522 1182,553" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
+      <polyline points="1178,546 1182,553 1186,546" fill="none" stroke="#adb9c6" stroke-width="1.6" stroke-linejoin="round"/>
     </g>
   </g>
   <g id="start" data-symbol="terminal">
-    <rect x="44" y="75" width="192" height="46" rx="23" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="140" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">Start</text>
+    <rect x="128" y="134" width="124" height="36" rx="18" fill="#deebfa" stroke="#83a9d4" stroke-width="1.4"/>
+    <text x="190" y="158" fill="#132f4e" font-size="17" font-weight="700" text-anchor="middle">Start</text>
   </g>
-  <g id="input" data-symbol="data">
-    <polygon points="58,140 236,140 222,208 44,208" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="140" y="169" fill="#edf6ff" font-size="16" font-weight="700" text-anchor="middle">Recording details</text>
-    <text x="140" y="191" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">Bilibili URL or BV ID · part</text>
+  <g id="source" data-symbol="data">
+    <polygon points="90,186 304,186 290,246 76,246" fill="#deebfa" stroke="#83a9d4" stroke-width="1.4"/>
+    <text x="190" y="212" fill="#132f4e" font-size="17" font-weight="700" text-anchor="middle">Recording URL or BV ID</text>
+    <text x="190" y="233" fill="#284867" font-size="14" font-weight="400" text-anchor="middle">Select a video part</text>
   </g>
-  <g id="fetch" data-symbol="process">
-    <rect x="44" y="230" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="140" y="251" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Get source audio</text>
-    <text x="140" y="271" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Highest DASH bitrate</text>
-    <text x="140" y="288" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Stereo AAC · 44.1 / 48 kHz</text>
-  </g>
-  <g id="source-valid" data-symbol="decision">
-    <polygon points="140,327 236,371 140,415 44,371" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
-    <text x="140" y="377" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">Source valid?</text>
-  </g>
-  <g id="source-log" data-symbol="process">
-    <rect x="260" y="430" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="356" y="470" fill="#f7f9fc" font-size="17" font-weight="700" text-anchor="middle">Log source failure</text>
-  </g>
-  <g id="source-end" data-symbol="terminal">
-    <rect x="260" y="544" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
-    <text x="356" y="573" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">End this session</text>
+  <g id="audio" data-symbol="process">
+    <rect x="76" y="266" width="228" height="74" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="190" y="289" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Fetch and validate audio</text>
+    <text x="190" y="311" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Highest available DASH bitrate</text>
+    <text x="190" y="329" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Stereo AAC · 44.1 / 48 kHz</text>
   </g>
   <g id="transcribe" data-symbol="process">
-    <rect x="44" y="449" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="140" y="470" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Transcribe on CPU</text>
-    <text x="140" y="490" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Whisper small</text>
-    <text x="140" y="507" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Cache word timestamps</text>
-  </g>
-  <g id="detect" data-symbol="process">
-    <rect x="44" y="548" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="140" y="569" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Detect singing</text>
-    <text x="140" y="589" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Classify singing and speech</text>
-    <text x="140" y="606" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Label coverage ≥95%</text>
-  </g>
-  <g id="a-out" data-symbol="connector">
-    <circle cx="140" cy="697" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="140" y="703" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">A</text>
-  </g>
-  <g id="a-in" data-symbol="connector">
-    <circle cx="608" cy="98" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="608" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">A</text>
+    <rect x="76" y="364" width="228" height="88" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="190" y="386" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Transcribe and segment</text>
+    <text x="190" y="408" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Whisper small on CPU</text>
+    <text x="190" y="426" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Cache word timestamps</text>
+    <text x="190" y="444" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Singing and speech labels ≥95%</text>
   </g>
   <g id="identify" data-symbol="process">
-    <rect x="512" y="149" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="608" y="170" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Identify the song</text>
-    <text x="608" y="190" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">NetEase lyrics · recall ≥40%</text>
-    <text x="608" y="207" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">DTW ≥60% if measurable</text>
+    <rect x="452" y="112" width="228" height="74" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="566" y="135" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Identify the song</text>
+    <text x="566" y="157" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">NetEase lyrics · recall ≥40%</text>
+    <text x="566" y="175" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">DTW ≥60% when measurable</text>
   </g>
   <g id="cut" data-symbol="process">
-    <rect x="512" y="247" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="608" y="263" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Refine the cut</text>
-    <text x="608" y="280" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">FFmpeg stream copy</text>
-    <text x="608" y="295" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Silence ≥500 ms · talk ≤8%</text>
-    <text x="608" y="310" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Duration error ≤0.15 s</text>
+    <rect x="452" y="219" width="228" height="88" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="566" y="241" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Refine the cut</text>
+    <text x="566" y="263" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">FFmpeg stream copy</text>
+    <text x="566" y="281" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Silence ≥500 ms · speech ≤8%</text>
+    <text x="566" y="299" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Duration error ≤0.15 s</text>
   </g>
   <g id="align" data-symbol="process">
-    <rect x="512" y="345" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="608" y="366" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Align the lyrics</text>
-    <text x="608" y="386" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Whisper timings + pinyin DTW</text>
-    <text x="608" y="403" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Coverage ≥80% · anchors ≥85%</text>
+    <rect x="452" y="348" width="228" height="102" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="566" y="370" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Align and check lyrics</text>
+    <text x="566" y="391" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Whisper word times + pinyin DTW</text>
+    <text x="566" y="408" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Coverage ≥80% · anchors ≥85%</text>
+    <text x="566" y="425" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">vs. ASR: median ≤0.30 s</text>
+    <text x="566" y="442" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">P95 ≤0.90 s</text>
   </g>
-  <g id="check" data-symbol="process">
-    <rect x="512" y="443" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="608" y="459" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Run quality checks</text>
-    <text x="608" y="476" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">ASR median error ≤0.30 s</text>
-    <text x="608" y="491" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">P95 ≤0.90 s</text>
-    <text x="608" y="506" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Optional MiMo audio check</text>
+  <g id="quality" data-symbol="decision">
+    <polygon points="926,74 1040,122 926,170 812,122" fill="#fff2d6" stroke="#d5a160" stroke-width="1.4"/>
+    <text x="926" y="118" fill="#463112" font-size="17" font-weight="700" text-anchor="middle">Quality checks</text>
+    <text x="926" y="139" fill="#463112" font-size="17" font-weight="700" text-anchor="middle">passed?</text>
   </g>
-  <g id="quality-pass" data-symbol="decision">
-    <polygon points="608,536 704,580 608,624 512,580" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
-    <text x="608" y="576" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">Quality checks</text>
-    <text x="608" y="595" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">passed?</text>
+  <g id="reject-log" data-symbol="process">
+    <rect x="1068" y="89" width="228" height="66" rx="0" fill="#f9e7ea" stroke="#c47985" stroke-width="1.4"/>
+    <text x="1182" y="118" fill="#662d39" font-size="17" font-weight="700" text-anchor="middle">Log failed checks</text>
+    <text x="1182" y="139" fill="#703642" font-size="14" font-weight="400" text-anchor="middle">Record why the candidate failed</text>
   </g>
-  <g id="candidate-log" data-symbol="process">
-    <rect x="728" y="631" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="824" y="660" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Log rejection</text>
-    <text x="824" y="682" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Record the failed check</text>
-  </g>
-  <g id="candidate-end" data-symbol="terminal">
-    <rect x="728" y="731" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
-    <text x="824" y="760" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">Candidate rejected</text>
-  </g>
-  <g id="b-out" data-symbol="connector">
-    <circle cx="608" cy="697" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="608" y="703" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">B</text>
-  </g>
-  <g id="b-in" data-symbol="connector">
-    <circle cx="1076" cy="98" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="1076" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">B</text>
+  <g id="rejected" data-symbol="terminal">
+    <rect x="1095" y="205" width="174" height="38" rx="19" fill="#f9e7ea" stroke="#c47985" stroke-width="1.4"/>
+    <text x="1182" y="230" fill="#662d39" font-size="17" font-weight="700" text-anchor="middle">Candidate rejected</text>
   </g>
   <g id="package" data-symbol="process">
-    <rect x="980" y="149" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="1076" y="170" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Package the cut</text>
-    <text x="1076" y="190" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Generate audio and subtitles</text>
-    <text x="1076" y="207" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Write the pending index</text>
+    <rect x="812" y="197" width="228" height="76" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="926" y="221" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Package accepted cut</text>
+    <text x="926" y="243" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Write audio, lyrics and subtitles</text>
+    <text x="926" y="261" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Add a pending catalog entry</text>
   </g>
-  <g id="deliverables" data-symbol="data">
-    <polygon points="994,247 1172,247 1158,315 980,315" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
-    <text x="1076" y="268" fill="#edf6ff" font-size="16" font-weight="700" text-anchor="middle">Pending deliverables</text>
-    <text x="1076" y="288" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">M4A · LRC · ASS</text>
-    <text x="1076" y="305" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">Pending catalog entry</text>
+  <g id="files" data-symbol="data">
+    <polygon points="826,289 1040,289 1026,343 812,343" fill="#deebfa" stroke="#83a9d4" stroke-width="1.4"/>
+    <text x="926" y="312" fill="#132f4e" font-size="17" font-weight="700" text-anchor="middle">Pending deliverables</text>
+    <text x="926" y="333" fill="#284867" font-size="14" font-weight="400" text-anchor="middle">M4A · LRC · ASS · index</text>
   </g>
-  <g id="manual-review" data-symbol="manual">
-    <polygon points="980,345 1172,345 1157,413 995,413" fill="#302a46" stroke="#a391cb" stroke-width="1.5" />
-    <text x="1076" y="374" fill="#f2edff" font-size="16" font-weight="700" text-anchor="middle">Review by ear</text>
-    <text x="1076" y="396" fill="#e0d9ef" font-size="13" font-weight="400" text-anchor="middle">Verify playback and timing</text>
+  <g id="review" data-symbol="manual">
+    <polygon points="812,360 1040,360 1025,420 827,420" fill="#e9e5f6" stroke="#a398c5" stroke-width="1.4"/>
+    <text x="926" y="386" fill="#35294d" font-size="17" font-weight="700" text-anchor="middle">Listen and verify</text>
+    <text x="926" y="407" fill="#4f4167" font-size="14" font-weight="400" text-anchor="middle">Check playback and lyric timing</text>
   </g>
   <g id="approval" data-symbol="decision">
-    <polygon points="1076,433 1172,477 1076,521 980,477" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
-    <text x="1076" y="473" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">Approved for</text>
-    <text x="1076" y="492" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">release?</text>
+    <polygon points="926,438 1040,486 926,534 812,486" fill="#fff2d6" stroke="#d5a160" stroke-width="1.4"/>
+    <text x="926" y="482" fill="#463112" font-size="17" font-weight="700" text-anchor="middle">Approved for</text>
+    <text x="926" y="503" fill="#463112" font-size="17" font-weight="700" text-anchor="middle">release?</text>
   </g>
-  <g id="hold-end" data-symbol="terminal">
-    <rect x="1196" y="551" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
-    <text x="1292" y="580" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">Keep pending</text>
+  <g id="held" data-symbol="terminal">
+    <rect x="839" y="553" width="174" height="38" rx="19" fill="#e8edf4" stroke="#8c9aae" stroke-width="1.4"/>
+    <text x="926" y="578" fill="#2d4058" font-size="17" font-weight="700" text-anchor="middle">Keep pending</text>
   </g>
   <g id="publish" data-symbol="process">
-    <rect x="980" y="546" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
-    <text x="1076" y="567" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">Publish to web library</text>
-    <text x="1076" y="587" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Merge approved entries</text>
-    <text x="1076" y="604" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Copy audio and rebuild page</text>
+    <rect x="1068" y="450" width="228" height="72" rx="0" fill="#222931" stroke="#55616e" stroke-width="1.4"/>
+    <text x="1182" y="472" fill="#f4f7fb" font-size="17" font-weight="700" text-anchor="middle">Publish to web library</text>
+    <text x="1182" y="494" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Copy approved audio</text>
+    <text x="1182" y="512" fill="#c3cdd9" font-size="14" font-weight="400" text-anchor="middle">Merge catalog and rebuild page</text>
   </g>
-  <g id="publish-end" data-symbol="terminal">
-    <rect x="980" y="674" width="192" height="46" rx="23" fill="#223e33" stroke="#78ad8c" stroke-width="1.5" />
-    <text x="1076" y="703" fill="#e9fff0" font-size="17" font-weight="700" text-anchor="middle">Published</text>
+  <g id="published" data-symbol="terminal">
+    <rect x="1095" y="553" width="174" height="38" rx="19" fill="#ddf2e7" stroke="#78a691" stroke-width="1.4"/>
+    <text x="1182" y="578" fill="#204837" font-size="17" font-weight="700" text-anchor="middle">Published</text>
   </g>
 </svg>
