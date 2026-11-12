@@ -19,9 +19,9 @@
 
 <table>
   <tr>
-    <td align="center" valign="top" width="54%"><img src="docs/images/player-desktop.jpg" width="430" alt="桌面播放器显示封面、同步歌词和进度控制"></td>
-    <td align="center" valign="top" width="23%"><img src="docs/images/player-mobile.jpg" width="185" alt="手机播放器显示封面、当前歌词和播放控制"></td>
-    <td align="center" valign="top" width="23%"><img src="docs/images/library-mobile.jpg" width="185" alt="手机曲库按演唱日期筛选"></td>
+    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="375" alt="桌面播放器显示封面、同步歌词和进度控制"></td>
+    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="375" alt="手机播放器显示封面、当前歌词和播放控制"></td>
+    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="375" alt="手机曲库按演唱日期筛选"></td>
   </tr>
   <tr>
     <td align="center">桌面播放器</td>

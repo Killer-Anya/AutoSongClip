@@ -19,9 +19,9 @@ The screenshots were captured from the deployed V1 player on November 10, 2026. 
 
 <table>
   <tr>
-    <td align="center" valign="top" width="54%"><img src="docs/images/player-desktop.jpg" width="430" alt="Desktop player with cover art, synchronized lyrics, and playback controls"></td>
-    <td align="center" valign="top" width="23%"><img src="docs/images/player-mobile.jpg" width="185" alt="Mobile player with the current lyric and playback controls"></td>
-    <td align="center" valign="top" width="23%"><img src="docs/images/library-mobile.jpg" width="185" alt="Mobile song library filtered by performance date"></td>
+    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="375" alt="Desktop player with cover art, synchronized lyrics, and playback controls"></td>
+    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="375" alt="Mobile player with the current lyric and playback controls"></td>
+    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="375" alt="Mobile song library filtered by performance date"></td>
   </tr>
   <tr>
     <td align="center">Desktop player</td>
