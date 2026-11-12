@@ -5,6 +5,7 @@ import json
 import re
 import urllib.request
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 import os as _os
 from pathlib import Path as _P
 ROOT = _P(_os.environ.get('SONG_CUT_HOME') or _P(__file__).resolve().parent.parent)
@@ -43,16 +44,33 @@ def get_buvid():
     return f"buvid3={d['data']['b_3']}"
 
 
-def parse_bvid(s):
-    m = re.search(r"(BV[0-9A-Za-z]{10})", s)
-    if m:
-        return m.group(1)
-    raise ValueError(f"无法解析 BV 号: {s}")
+def parse_bvid(value):
+    """Return the BV ID from a bare ID or a Bilibili video URL."""
+    parsed = urlsplit(value.strip())
+    if not parsed.scheme and not parsed.netloc:
+        candidate = parsed.path
+    else:
+        host = parsed.hostname or ""
+        is_bilibili = host == "bilibili.com" or host.endswith(".bilibili.com")
+        if parsed.scheme not in ("http", "https") or not is_bilibili:
+            raise ValueError("请输入 B 站视频链接或 BV 号")
+        match = re.fullmatch(r"/video/(BV[0-9A-Za-z]{10})/?", parsed.path)
+        candidate = match.group(1) if match else ""
+    if not re.fullmatch(r"BV[0-9A-Za-z]{10}", candidate):
+        raise ValueError("无法解析 BV 号，请使用 BV 号或 B 站 /video/BV… 链接")
+    return candidate
 
 
-def parse_page(url):
-    m = re.search(r"[?&]p=(\d+)", url)
-    return int(m.group(1)) if m else 1
+def parse_page(url, page=None):
+    """Use the explicit page when supplied, otherwise read the URL query."""
+    if page is None:
+        pages = parse_qs(urlsplit(url.strip()).query, keep_blank_values=True).get("p", ["1"])
+        if len(pages) != 1:
+            raise ValueError("链接里只能指定一个分 P")
+        page = pages[0]
+    if not re.fullmatch(r"[0-9]+", str(page)) or int(page) < 1:
+        raise ValueError("分 P 必须是大于 0 的整数")
+    return int(page)
 
 
 def video_info(bvid, cookie):
@@ -103,12 +121,16 @@ def download(url, dest, cookie, chunk=1 << 20):
     return dest
 
 
-def fetch_audio(url_or_id, out_dir=f"{ROOT}/newaudio"):
-    cookie = get_buvid()
+def fetch_audio(url_or_id, out_dir=f"{ROOT}/newaudio", *, page=None):
     bvid = parse_bvid(url_or_id)
-    page = parse_page(url_or_id)
+    page = parse_page(url_or_id, page)
+    cookie = get_buvid()
     info = video_info(bvid, cookie)
-    pg = next((p for p in info["pages"] if p["page"] == page), info["pages"][0])
+    pages = info["pages"]
+    pg = next((item for item in pages if item["page"] == page), None)
+    if pg is None:
+        available = "、".join(f"P{item['page']}" for item in pages) or "无"
+        raise ValueError(f"{bvid} 不存在 P{page}（可用分 P：{available}）")
     print(f"[info] {info['title']} | {info['uploader']} | {info['duration']}s | "
           f"共{len(info['pages'])}P | 处理 P{pg['page']}: {pg['part']}", flush=True)
     streams = audio_streams(info["aid"], pg["cid"], cookie)

@@ -2,10 +2,13 @@
 """Serve the local SongCut player with single byte-range support."""
 
 import argparse
+import errno
 import os
 import re
+import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from threading import Thread
 
 SITE = Path(__file__).resolve().parent
 BYTE_RANGE = re.compile(r"bytes=([0-9]{0,20})-([0-9]{0,20})")
@@ -87,11 +90,26 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("port", nargs="?", type=int, default=18081)
     parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--open", action="store_true", help="open the player in the default browser")
     args = parser.parse_args()
 
-    with ThreadingHTTPServer((args.host, args.port), Handler) as server:
-        print(f"SongCut player: http://{args.host}:{server.server_port}/web/", flush=True)
-        server.serve_forever()
+    try:
+        server = ThreadingHTTPServer((args.host, args.port), Handler)
+    except OSError as error:
+        if error.errno == errno.EADDRINUSE or getattr(error, "winerror", None) == 10048:
+            parser.exit(1, f"Port {args.port} is already in use. Close its server or specify a different port.\n")
+        parser.exit(1, f"SongCut could not start: {error}\n")
+
+    with server:
+        browser_host = "127.0.0.1" if args.host == "0.0.0.0" else args.host
+        url = f"http://{browser_host}:{server.server_port}/web/"
+        print(f"SongCut player: {url}", flush=True)
+        if args.open:
+            Thread(target=webbrowser.open, args=(url,), daemon=True).start()
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\nSongCut preview stopped.")
 
 
 if __name__ == "__main__":

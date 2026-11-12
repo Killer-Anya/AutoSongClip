@@ -1,130 +1,119 @@
-# SongCut
+# VTuber Auto Song Clipper｜VTuber 录播歌切工作流
 
 **English** · [简体中文](README.zh-CN.md)
 
-Extract song performances from long Bilibili livestream recordings, identify tracks, align lyrics, and review the results before publishing them to a browsable web library.
+Submit a recording URL to extract performances, identify the songs, align their lyrics, and review the results. Approved performances can then be published to a web song library.
 
-[Preview](#preview) · [Quick start](#quick-start) · [Workflow](#workflow) · [Quality and logs](#quality-and-logs)
+[Case study](#case-study) · [Workflow](#workflow) · [Quick start](#quick-start) · [Technology](#technology) · [Quality requirements](#quality-requirements) · [Development log](#development-log)
 
-## Preview
+## Case study
 
-These screenshots were captured from the deployed V1 player on November 10, 2026. This repository contains the V2 song-cutting pipeline and web player source.
+- **VTuber**: 妮莉安Lily
+- **VTuber profile**: [妮莉安Lily on Bilibili](https://space.bilibili.com/3493271057730096?spm_id_from=333.337.0.0)
+- **Recording platform**: [Bilibili singing stream archive, November 26, 2023](https://www.bilibili.com/video/BV1ej411L7qb/) (example from the processing log)
+- **Player preview**: [http://127.0.0.1:18081/web/](http://127.0.0.1:18081/web/) (available on your computer after you start the player)
 
-![Desktop player with cover art, synchronized lyrics, performance details, and progress controls](docs/images/player-desktop.jpg)
+The screenshots were captured from the deployed V1 player on November 10, 2026. This repository includes the V2 pipeline and web player source. V2 is undergoing batch testing on the server.
 
-*Desktop player (1024 × 960)*
+> **Copyright and takedown.** The recordings, performances, lyrics, cover artwork, and character imagery shown in this case study belong to their respective rights holders. The screenshots illustrate the project. If you believe any displayed material infringes your rights, contact the maintainer with a link, the material at issue, and a description of your rights. The maintainer will review removal or correction requests. Keep personal information and proof of ownership out of public issues. [Contact the maintainer](https://github.com/Killer-Anya/songcut/issues/new)
 
 <table>
   <tr>
-    <td align="center" width="50%">
-      <img src="docs/images/player-mobile.jpg" width="290" alt="Mobile player with cover art, the current lyric, track details, and playback controls" />
-      <br /><strong>Player and synchronized lyrics</strong>
-    </td>
-    <td align="center" width="50%">
-      <img src="docs/images/library-mobile.jpg" width="290" alt="Mobile library filtered by performance date" />
-      <br /><strong>Browse performances by date</strong>
-    </td>
+    <td align="center" valign="top" width="54%"><img src="docs/images/player-desktop.jpg" width="430" alt="Desktop player with cover art, synchronized lyrics, and playback controls"></td>
+    <td align="center" valign="top" width="23%"><img src="docs/images/player-mobile.jpg" width="185" alt="Mobile player with the current lyric and playback controls"></td>
+    <td align="center" valign="top" width="23%"><img src="docs/images/library-mobile.jpg" width="185" alt="Mobile song library filtered by performance date"></td>
+  </tr>
+  <tr>
+    <td align="center">Desktop player</td>
+    <td align="center">Mobile player</td>
+    <td align="center">Mobile library</td>
   </tr>
 </table>
 
-Mobile captures use a 390 × 844 browser viewport.
-
 ## Workflow
 
-```mermaid
-flowchart LR
-    A[Recording audio] --> B[Transcription and performance detection]
-    B --> C[Song identification and lyric lookup]
-    C --> D[Refine boundaries and cut audio]
-    D --> E[Lyric alignment and quality review]
-    E --> F[Audio, LRC, ASS, and library index]
-    F --> G[Review and publish to the player]
-```
+| Stage | How it works | Output and checks |
+| --- | --- | --- |
+| 1. Fetch the audio track | Accept a Bilibili video URL or BV ID, resolve its part, and choose the highest-bandwidth DASH audio track available. | Preserve the original M4A. The source check requires AAC, 44.1 or 48 kHz, and stereo, with at least 128 kbps when bitrate is available. |
+| 2. Transcribe and locate performances | Decode an analysis copy at 16 kHz mono. Run faster-whisper small in 300-second chunks with CPU INT8, cache sentence and word timestamps, and label singing and speech with a text model. | Store reusable JSONL. Valid labels must cover at least 95% of transcript sentences. Nearby singing segments are grouped, and the V2 online path skips candidates under 90 seconds. |
+| 3. Identify songs and retrieve lyrics | Search NetEase Cloud Music using several transcript excerpts. Rank candidates by text similarity, lyric recall, and pinyin alignment. Use text review to help judge identification, completeness, duets, and talk. | Resolve the title, original performer, and reference lyrics. The identification stage uses a 40% recall threshold and a 60% alignment threshold. |
+| 4. Refine the cut | Use the first and last singing labels to find nearby silence, measured with short RMS windows. The silence search requires at least 500 ms. FFmpeg stream-copies the source audio. | The V2 online path starts with 3 seconds of lead-in and 4 seconds of tail. It checks codec, sample rate, channels, a cut-duration tolerance of 0.15 seconds, and up to 8% labeled speech. |
+| 5. Align and review | Generate LRC from Whisper word timestamps and pinyin dynamic time warping (DTW). Reuse the full transcript where possible and transcribe the cut again when there are too few segments. MiMo can inspect three clips of about 20 seconds for song identity, talk, and splicing. | Require ≥85% anchors, ≥80% lyric coverage, and ≥66% Chinese-character recall. The median timing error is limited to 0.30 seconds and P95 to 0.90 seconds against ASR timestamps. Audio review has its own status and can be checked manually when unavailable. |
+| 6. Package and publish | Write M4A, line-timed LRC, word-highlighted ASS, and a pending catalog. After review, merge approved entries into the published library and rebuild the page. | The player offers search, language and date filters, and synchronized lyrics. Check playback, lyric correspondence, and subtitle rendering before publishing. |
 
-- **Long recordings and multiple parts.** Transcription caches can be reused for the same recording and part, and the queue records processing progress.
-- **Separate checks for cuts and lyric timing.** Silence, performance regions, and media parameters support cut review. Transcription timestamps, lyric recall, and dynamic time warping (DTW) support alignment review.
-- **Traceable review results.** The performance index, quality metrics, rejection records, and sanitized logs explain what happened to a segment.
-- **Web player included.** Plain HTML, CSS, and JavaScript provide library browsing, synchronized lyrics, and playback controls.
-
-A performance that passes the processing and review stages is organized into `01_audio.m4a`, `02_lyrics.lrc`, and `03_karaoke.ass`.
+See the [quality report](docs/指标与质量报告.md#english-summary) for sample results and methodology. The [architecture notes](docs/架构说明.md) cover the entry points and data files.
 
 ## Quick start
 
-### Preview the web player
+### Download, extract, and double-click to preview
 
-Start the Python static server from the repository root.
+1. [Download the ZIP](https://github.com/Killer-Anya/songcut/archive/refs/heads/main.zip) and extract the whole folder.
+2. Install [Python 3.10 or later](https://www.python.org/downloads/). On macOS, double-click `Start SongCut.command`. On Windows, double-click `Start SongCut.bat`.
+3. Keep the launcher window open while using the player. The preview only needs Python and starts with an empty library. To load your own tracks, follow the [player notes](site/README.md).
 
-```bash
-python3 site/server.py 18081
-```
+On Linux, run `python3 site/server.py 18081 --open` in the extracted folder. If port 18081 is in use, choose another port in that command.
 
-Open `http://127.0.0.1:18081/web/`. The included player starts with an empty library so you can preview its layout and empty state. To load your own library, prepare `queue/songs_index.json` and its referenced audio, then run `python3 lib/build_site.py`. The player reads audio from `site/audio/`. The frontend layout is documented in the [player notes](site/README.md).
+### Set up and process a recording
 
-### Install pipeline dependencies
-
-The pipeline is designed for Linux. Use Python 3.10 or later and install FFmpeg, FFprobe, Bash, `flock`, and `free`. Local transcription uses the faster-whisper `small` model. Place the extracted model files in `models/small` or set `SONG_CUT_MODELS` to the parent directory of `small`.
+Run the full pipeline on Linux. In the extracted folder, install the dependencies and download the CTranslate2 version of Whisper small. On Ubuntu or Debian, use the following commands.
 
 ```bash
-git clone https://github.com/Killer-Anya/songcut.git
-cd songcut
+sudo apt install python3 python3-venv ffmpeg util-linux procps
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+python -c "from huggingface_hub import snapshot_download; snapshot_download('Systran/faster-whisper-small', local_dir='models/small')"
 ```
 
-### Run a processing entry point
+| What you have | How to proceed |
+| --- | --- |
+| Text review and MiMo audio access | The server uses GLM-5.3-Flash for text review and MiMo-V2.6-Flash for audio spot checks. The public code defaults to a compatible local proxy on port 18090. Follow the [configuration example](docs/架构说明.md#文本服务与资源配置) to set `JUDGE_API`, `JUDGE_HEALTH`, `JUDGE_MODEL`, and `JUDGE_KEY`. Supply `TONGJI_API_KEY` when using the Tongji proxy. |
+| Text review access without MiMo | Use the command below. Local Whisper and lyric checks run as usual, and audio review is recorded as `skipped`. The deployed V1 used local transcription, GLM text review, and manual listening. This option follows that division of work while retaining V2 lyric checks. |
+| Source audio and a transcript cache, without model API access | The server-tested cached path is `python3 pipeline/pipe_offline.py <BV-ID> [part]`. It needs `res/<recording-tag>.m4a`, `queue/asr_v3/<recording-tag>.jsonl`, and a local lyric corpus or catalog. It may query NetEase Cloud Music for missing lyrics. See the [queue notes](queue/README.md) to prepare a transcript cache. |
 
-Replace the sample BV ID, title, date, and part number with your own recording information. Single-recording and queue modes require a reachable text review service and the credentials for that service. The default Tongji service proxy listens on local port 18090. See [llmcfg.py](lib/llmcfg.py) for text review configuration.
+Replace the URL, title, and date with your recording details. The `?p=2` in the URL selects part 2. This command disables all MiMo calls and uses the text review service you configured.
 
 ```bash
-# Process part 1 of a recording
-python3 pipeline/pipe_v3.py BV1xxxxxxxxx 'Performance title' 2026-01-01 1
-
-# Process up to 5 entries from your queue/streams_v3.json
-python3 pipeline/run_v3.py 5
-
-# Reprocess part 1 from an existing audio track and transcription cache
-python3 pipeline/pipe_offline.py BV1xxxxxxxxx 1
+MIMO_VERIFY=0 MIMO_ASR=0 MIMO_ANCHOR=0 python3 pipeline/pipe_v3.py \
+  'https://www.bilibili.com/video/BV1xxxxxxxxx/?p=2' 'Recording title' 2026-01-01
 ```
 
-Use the [queue format (Chinese)](queue/README.md) to prepare the input file. Cached reprocessing requires `res/<recording-tag>.m4a`, `queue/asr_v3/<recording-tag>.jsonl`, and local lyric reference data. The tag is the BV ID for part 1 and `BV_ID_pN` for later parts. This mode skips cloud language-model review and may contact a lyric service for missing references.
+Find the outputs in `library/` and `queue/songs_index_new.json`. Before publishing, keep only approved entries in the pending index. Put the matching M4A files under `site/audio/` using the relative paths in the index, then run `python3 tools/publish_new.py` to rebuild the library page. See the [queue notes](queue/README.md) for batch input.
 
-The release was checked with a local player preview, HTTP byte ranges, and a sample catalog build. A full media run requires an actual recording, model files, and service configuration.
+### Verified low-resource baseline
 
-## Configuration
-
-| Environment variable | Purpose and default |
+| Component | Server tested on November 12, 2026 |
 | --- | --- |
-| `SONG_CUT_HOME` | Working root. The main entry points default to the repository root and resolve scripts, `res/`, `queue/`, and `library/` relative to it. |
-| `SONG_CUT_FFMPEG`, `SONG_CUT_FFPROBE` | Media executable overrides. The main entry points check explicit configuration, `bin2/`, and the system `PATH`, in that order. |
-| `SONG_CUT_PY` | Python executable for subprocesses. Defaults to `python3`. |
-| `SONG_CUT_PYTHONPATH` | Extra module search path read by the path helpers. Defaults to an empty value. |
-| `SONG_CUT_MODELS` | Parent directory of the local `small` model. Defaults to `<project-root>/models`. |
-| `TONGJI_API_KEY` | Credential for the Tongji service. Defaults to an empty value. Supply your own through the environment. |
-| `JUDGE_API`, `JUDGE_HEALTH`, `JUDGE_KEY`, `JUDGE_MODEL` | Endpoint, health check, credential, and model overrides for text review modules. |
-| `MIMO_ASR`, `MIMO_ANCHOR` | Experimental switches for MiMo transcription and timing anchors. Both default to `0`. |
+| CPU and memory | 2 vCPUs on AMD EPYC 7K62, 3,723 MiB RAM, and about 2 GiB swap. Local transcription runs on the CPU. |
+| OS and tools | Ubuntu 24.04.4 LTS, Python 3.12.3, and project-provided FFmpeg / FFprobe static build `n9.0.2-17-g2a571b6068`. |
+| Disk | About 69 GB total and 36 GB free at the time of the check. Audio tracks, caches, and clips consume additional space. |
+| Execution and timing | One job at a time. The most recent 15 V2 sessions had a median of about 31 minutes from download to packaging. The handoff reports around 10 minutes with a transcript cache and 35–50 minutes for a cold run. |
 
-## Technology and layout
+The default guard defers transcription below 1,200 MB available memory and stops it below 350 MB during a run. The table gives a tested baseline. Stability below that configuration needs further testing. Runtime varies with the recording, cache, and service availability.
 
-Python orchestrates the pipeline. FFmpeg, FFprobe, and PyAV handle media, and faster-whisper provides local transcription. NumPy, pypinyin, zhconv, and project DTW modules support audio analysis, Chinese text normalization, and lyric alignment. Some review stages use external models.
+## Technology
 
-| Directory | Contents |
+| Component | Technology and responsibility |
 | --- | --- |
-| `pipeline/` | Single-recording, queue, and cached reprocessing entry points |
-| `lib/` | Downloading, decoding, transcription, segmentation, song identification, alignment, quality checks, and site generation |
-| `tools/` | Karaoke subtitles, final checks, independent review, reporting, and publishing |
-| `site/` | Single-file web player and preview server |
-| `docs/` | Architecture, stage specifications, metrics, and screenshots. Technical documents are in Chinese. |
-| `queue/`, `logs/` | Sample queue and sanitized log samples |
+| Audio acquisition | Python standard-library requests retrieve Bilibili metadata and DASH audio. The player serves approved audio from the local media directory. |
+| Media processing | PyAV decodes and resamples for analysis. NumPy measures energy and silence. FFmpeg stream-copies cuts, FFprobe checks format, and FFmpeg `ebur128` measures loudness and true peak. |
+| Local transcription and alignment | faster-whisper and CTranslate2 run CPU INT8 transcription. zhconv normalizes Chinese text, pypinyin supplies pinyin, and the project uses DTW and local re-anchoring to handle repeated or missing lines. |
+| External services | OpenAI-compatible endpoints serve GLM text review and MiMo audio review. NetEase Cloud Music supplies song candidates and reference lyrics. |
+| Queue and publishing | Python entry points run single sessions, batches, and cached reprocessing. JSON and JSONL store queue state, caches, and metrics. The server uses systemd, Bash, `flock`, and `free` for supervision and resource control. |
+| Web player | HTML, CSS, JavaScript, and `HTMLAudioElement`. The Python preview server supports HTTP byte ranges for seeking. |
 
-## Quality and logs
+`pipeline/` contains the entry points, `lib/` the processing stages, `tools/` the review and publishing tools, `site/` the player, and `docs/` the documentation.
 
-Audio boundaries, lyric coverage, and timing errors are recorded separately. Duets, medleys, speech, and accompaniment can affect identification and alignment. Use the original audio to review difficult sections. Runtime depends on recording length, caching, model settings, hardware, and service access.
+## Quality requirements
 
-See the [architecture notes](docs/架构说明.md), [stage specifications](docs/歌切标准_V6.md), [metrics report](docs/指标与质量报告.md), and [sanitized log samples](logs/). The logs describe the specific runs they accompany.
+SongCut draws on ITU-R BS.1770 and EBU R 128 for audio measurement and Netflix's timing and readability guidelines for subtitles. **Those sources define methods and delivery principles. SongCut sets its own thresholds for long livestream audio, source preservation, and line-timed lyrics.** Loudness is measured and flagged while the source level is preserved. Alignment checks use the local transcript as a reference. Independent listening or manual annotation is needed to establish timing against the performance itself. [Quality requirements and references](docs/质量要求.md#english) · [Sample results](docs/指标与质量报告.md#english-summary)
+
+## Development log
+
+The [development log](docs/开发日志.md#english) records V1 deployment, V2 stage validation, model comparisons, recovery from service errors, and checks run on the public code. [Sanitized log samples](logs/) show stage output and failure reasons.
 
 ## Contributing and license
 
-Include the version, input conditions, expected and observed results, and sanitized logs with a proposed change. Check changes to audio cuts and lyric timing independently. Read the [contribution guidelines (Chinese)](CONTRIBUTING.md).
+When reporting a problem, include the version, steps to reproduce, and expected and observed results. Changes to cut points or lyric timing should include sample details, before-and-after measurements, and listening results. Remove credentials, private recordings, and full lyrics before sharing logs or test data. [Contribution guide](CONTRIBUTING.md#english)
 
-The code is licensed under MIT. This repository contains source, technical documentation, sanitized logs, and screenshots. Supply your own input media and model files. Third-party dependencies and media shown in screenshots carry their respective terms. See [LICENSE](LICENSE).
+The project code is released under the **MIT License**. Preserve the copyright and permission notice when redistributing the code or substantial portions of it. The case study's recordings, songs, lyrics, artwork, and character imagery retain their respective rights. [Full license](LICENSE)

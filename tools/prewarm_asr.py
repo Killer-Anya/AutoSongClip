@@ -74,9 +74,10 @@ def main():
     limit = int(sys.argv[1]) if len(sys.argv) > 1 else 6
     sys.path.insert(0, str(ROOT / 'lib'))
     import bili
-    cookie = bili.get_buvid()
     q = json.loads((ROOT / 'queue' / 'streams_v3.json').read_text(encoding='utf-8'))
     todo = [i for i in q if i['status'] in ('pending', 'fail')]
+    (ROOT / 'res').mkdir(parents=True, exist_ok=True)
+    (ROOT / 'queue' / 'asr_v3').mkdir(parents=True, exist_ok=True)
     # 队列正在跑场次时不要抢重活（避免 OOM），等它跑完再预热
     for _ in range(720):
         ps = subprocess.run('ps -eo cmd', shell=True, capture_output=True, text=True).stdout
@@ -117,7 +118,10 @@ def main():
         dur = duration(src)
         wav = wk / 'full.wav'
         log(f'解码 {tag}（{dur/60:.0f} 分钟）')
-        subprocess.run(f'{PY} {ROOT}/lib/decode_wav.py "{src}" "{wav}"', shell=True)
+        decode = subprocess.run([PY, ROOT / 'lib/decode_wav.py', src, wav])
+        if decode.returncode != 0:
+            log(f'  解码失败（退出码 {decode.returncode}）')
+            continue
         log(f'转写 {tag} 开始')
         for attempt in range(6):
             r = subprocess.run(

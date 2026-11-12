@@ -3,7 +3,7 @@
 """pipe_v3.py —— 精密切歌流水线（保留前奏/尾音，三件套交付）
 每场：下载原音轨 → 全流转写(beam2) → GLM分类 → 合并区间 → 识曲+GLM复核
       → 边界扩展到静音处 → 原音轨流复制 → 逐曲 beam5 重转排轴 → 门槛 → 打包(audio/lrc/ass)
-用法: pipe_v3.py <bvid> "<场次标题>" <日期 YYYY-MM-DD>
+用法: pipe_v3.py <B站录播网址或BV号> "<场次标题>" [日期 YYYY-MM-DD] [分P]
 """
 import os as _os
 from pathlib import Path as _P
@@ -16,6 +16,7 @@ import numpy as np
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT/'lib')); sys.path.insert(0, str(ROOT/'tools'))
 import align_lib as AL, gates as G, dtw_align as D, align_qwen as AQ, bound_lyric as BL, qc as QC, cutwin as CW
 import audiospec as AS
+import bili
 import mimo as MM
 import mimo_align as MA
 import os as _os
@@ -158,17 +159,63 @@ def get_duration(wav):
         return w.getnframes()/float(w.getframerate())
 
 
-def main(bvid, title, date, page=1):
-    page = int(page or 1)
+def review_audio(cut, duration, lyrics, title):
+    if os.environ.get('MIMO_VERIFY', '1') == '0':
+        return 'skipped', {}
+
+    try:
+        clips = []
+        for fraction, tag in ((0.12, 'a'), (0.5, 'b'), (0.85, 'c')):
+            output = Path(cut).with_name(f'{Path(cut).stem}_review_{tag}.wav')
+            clip = MM.clip(str(cut), max(0.0, duration * fraction), 20.0, output)
+            if clip:
+                clips.append(clip)
+        result = MM.verify_song(clips, lyrics, title) if clips else {}
+    except Exception as error:
+        log(f'    音频复核服务异常（{type(error).__name__}）')
+        return 'unavailable', {}
+
+    if not isinstance(result, dict):
+        return 'unavailable', {}
+    if (result.get('same_song') is False or result.get('singing') is False
+            or result.get('has_talk') is True or result.get('mixed_songs') is True):
+        return 'rejected', result
+    if (len(clips) == 3 and result.get('same_song') is True and result.get('singing') is True
+            and result.get('has_talk') is False and result.get('mixed_songs') is False):
+        return 'passed', result
+    return 'unavailable', result
+
+
+def load_index():
+    try:
+        entries = json.loads(IDX.read_text(encoding='utf-8'))
+    except FileNotFoundError:
+        return []
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError(f'成品索引无法解析：{IDX}') from error
+
+    if not isinstance(entries, list):
+        raise ValueError(f'成品索引应为 JSON 数组：{IDX}')
+    for number, entry in enumerate(entries, 1):
+        try:
+            int(entry['no'])
+        except (KeyError, TypeError, ValueError, OverflowError) as error:
+            raise ValueError(f'成品索引第 {number} 条缺少有效编号：{IDX}') from error
+    return entries
+
+
+def main(bvid, title, date, page=None):
+    page = bili.parse_page(bvid, page)
+    bvid = bili.parse_bvid(bvid)
+    load_index()  # 在下载和转写之前检查已有索引。
+    IDX.parent.mkdir(parents=True, exist_ok=True)
     TAG = f'{bvid}_p{page}' if page > 1 else bvid
     WORK.mkdir(exist_ok=True); RES.mkdir(exist_ok=True); LIB.mkdir(exist_ok=True)
     src = RES/f'{TAG}.m4a'
     if not src.exists():
-        import bili
         log(f'[1] 下载原始音轨 P{page}')
-        url = bvid if page == 1 else f'{bvid}?p={page}'
         # 必须用 fetch_audio 返回的路径：WORK 里会堆积历史文件，取"最新的一个"会拿错音轨
-        got_path, _info, _pg = bili.fetch_audio(url, str(WORK))
+        got_path, _info, _pg = bili.fetch_audio(bvid, str(WORK), page=page)
         if not got_path or not Path(got_path).exists():
             raise RuntimeError('下载失败')
         shutil.copyfile(got_path, src)
@@ -294,7 +341,7 @@ def main(bvid, title, date, page=1):
         log(f'    区间合并后 {len(regs)} → {len(merged)}')
     regs = merged
 
-    ix = json.loads(IDX.read_text(encoding='utf-8'))
+    ix = load_index()
     # 不清空该场已有条目：离线模式可能已经产出过歌，保留它们，新增的按成品路径覆盖同名条目
     before = len(ix)
     next_no = max([int(x['no']) for x in ix], default=0)+1
@@ -387,23 +434,15 @@ def main(bvid, title, date, page=1):
         if not qok:
             reject(f"{date} {t_name}", f"质检：{'；'.join(qbad)}", qm)
             log(f"    不发布 {t_name}：质检 {'；'.join(qbad)}"); continue
-        # 独立验收（音频模型）：抽首/中/尾三段，确认确实在唱这些歌词、无说话、无拼接
-        try:
-            verify_clips = []
-            for frac, tag in ((0.12, 'a'), (0.5, 'b'), (0.85, 'c')):
-                cp = MM.clip(str(cut), max(0.0, ndur * frac), 20.0, f'/tmp/mv_{tag}.wav')
-                if cp:
-                    verify_clips.append(cp)
-            mv = MM.verify_song(verify_clips, lyrics, t_name) if verify_clips else {}
-        except Exception:
-            mv = {}
-        if mv:
-            if mv.get('same_song') is False or mv.get('mixed_songs') is True or mv.get('has_talk') is True:
-                reject(f"{date} {t_name}",
-                       f"音频复核：同歌={mv.get('same_song')} 说话={mv.get('has_talk')} "
-                       f"拼接={mv.get('mixed_songs')} 命中={mv.get('lines_hit')}", mv)
-                log(f"    不发布 {t_name}：音频复核未通过（{str(mv.get('note'))[:40]}）"); continue
-            log(f"    音频复核通过 {t_name}：同歌✓ 命中{mv.get('lines_hit')} 置信{mv.get('confidence')}")
+        # 独立音频复核可关闭，缺失响应与明确通过分别记录。
+        audio_review, mv = review_audio(cut, ndur, lyrics, t_name)
+        if audio_review == 'rejected':
+            reject(f"{date} {t_name}",
+                   f"音频复核：同歌={mv.get('same_song')} 说话={mv.get('has_talk')} "
+                   f"拼接={mv.get('mixed_songs')} 命中={mv.get('lines_hit')}", mv)
+            log(f"    不发布 {t_name}：音频复核未通过（{str(mv.get('note'))[:40]}）")
+            continue
+        log(f'    音频复核 {audio_review}：{t_name}')
         no = str(next_no+added).zfill(3)
         pkg = LIB/f"{date}_{t_name}_{artist}{'' if page == 1 else f'_P{page}'}".replace('/','／')
         pkg.mkdir(parents=True, exist_ok=True)
@@ -416,18 +455,15 @@ def main(bvid, title, date, page=1):
                    'file':f"{pkg.name}/01_audio.m4a",'lrc':lrc,'lang':'国语','style':'未分类',
                    'date':date,'stream':title,'bvid':bvid,
                    'stream_time':'%02d:%02d:%05.2f'%(na//3600,(na%3600)//60,na%60),'na':round(na,3),'nb':round(nb,3),'quality_status':'PASS',
-                   'pipeline':VER,'peak':loud.get('tpeak'),'lufs':loud.get('lufs')})
+                   'pipeline':VER,'audio_review':audio_review,'peak':loud.get('tpeak'),'lufs':loud.get('lufs')})
         rec = {'v': VER, 'title': t_name, 'artist': artist, 'bvid': bvid, 'page': page,
                'cut': round(ndur, 2), 'na': na, 'nb': nb, 'qc': qm,
                'talk': round(talk_ratio, 3), 'loud': loud,
-               'cut_probe': cut_info, 'find': (FINDS[-2:] if FINDS else []), 'mimo': mv}
+               'cut_probe': cut_info, 'find': (FINDS[-2:] if FINDS else []), 'audio_review': audio_review, 'mimo': mv}
         with open(METRICS, 'a', encoding='utf-8') as mf:
             mf.write(json.dumps(rec, ensure_ascii=False)+'\n')
         # 写索引前重新读一遍，按 file 去重合并——绝不覆盖已有曲库（历史教训：整库被清空）
-        try:
-            disk = json.loads(IDX.read_text(encoding='utf-8'))
-        except Exception:
-            disk = []
+        disk = load_index()
         mine = {x.get('file') for x in ix}
         ix = [x for x in ix if x.get('file') in mine]
         ix = [x for x in disk if x.get('file') not in mine] + ix  # 旧条目被新结果替换
@@ -447,11 +483,11 @@ def main(bvid, title, date, page=1):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print('用法: python3 pipeline/pipe_v3.py <bvid> "<场次标题>" [日期 YYYY-MM-DD] [分P, 默认1]')
-        print('示例: python3 pipeline/pipe_v3.py BV1xxxxxxxxx "【直播回放】歌回 2026年01月01日19点场" 2026-01-01 1')
+        print('用法: python3 pipeline/pipe_v3.py <B站录播网址或BV号> "<场次标题>" [日期 YYYY-MM-DD] [分P]')
+        print('示例: python3 pipeline/pipe_v3.py "https://www.bilibili.com/video/BV1xxxxxxxxx/?p=2" "歌回" 2026-01-01')
         sys.exit(2)
     try:
         main(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv)>3 else '',
-             sys.argv[4] if len(sys.argv)>4 else 1)
+             sys.argv[4] if len(sys.argv)>4 else None)
     except Exception as e:
         import traceback; traceback.print_exc(); print('RESULT FAIL', flush=True); sys.exit(1)
