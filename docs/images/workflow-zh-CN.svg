@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1432" height="820" viewBox="0 0 1432 820" role="img" aria-labelledby="title description" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">
+  <title id="title">AutoSongClip 工程流程图</title>
+  <desc id="description">输入 B 站录播后校验源音轨，不合格则记录原因并结束该场。逐段识曲、切片、对齐歌词并质检，未通过的候选会被拦截并记录原因。通过的成品打包待审，人工审核同意后发布，其余保留待审。</desc>
+  <rect width="1432" height="820" rx="18" fill="#10151d" />
+  <g id="phase-1">
+    <rect x="24" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
+    <text x="248" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">音轨获取与演唱检测</text>
+  </g>
+  <g id="phase-2">
+    <rect x="492" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
+    <text x="716" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">识曲、精切与排轴</text>
+    <text x="716" y="73" fill="#b9cadb" font-size="13" font-weight="400" text-anchor="middle">逐一处理检测到的演唱片段</text>
+  </g>
+  <g id="phase-3">
+    <rect x="960" y="22" width="448" height="776" rx="14" fill="#19222d" stroke="#3b4b5d" />
+    <text x="1184" y="53" fill="#f4f7fb" font-size="23" font-weight="700" text-anchor="middle">人工审核与发布</text>
+  </g>
+  <g id="flow-lines">
+    <g data-from="start" data-to="input">
+      <polyline points="140,121 140,140" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,132 140,140 136,132" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="input" data-to="fetch">
+      <polyline points="140,208 140,230" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,222 140,230 136,222" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="fetch" data-to="source-valid">
+      <polyline points="140,298 140,327" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,319 140,327 136,319" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="149" y="437" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">是</text>
+    <g data-from="source-valid" data-to="transcribe">
+      <polyline points="140,415 140,449" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,441 140,449 136,441" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="transcribe" data-to="detect">
+      <polyline points="140,517 140,548" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,540 140,548 136,540" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="detect" data-to="a-out">
+      <polyline points="140,616 140,681" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="144,673 140,681 136,673" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="a-in" data-to="identify">
+      <polyline points="608,114 608,149" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,141 608,149 604,141" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="identify" data-to="cut">
+      <polyline points="608,217 608,247" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,239 608,247 604,239" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="cut" data-to="align">
+      <polyline points="608,315 608,345" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,337 608,345 604,337" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="align" data-to="check">
+      <polyline points="608,413 608,443" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,435 608,443 604,435" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="check" data-to="quality-pass">
+      <polyline points="608,511 608,536" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,528 608,536 604,528" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="617" y="657" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">是</text>
+    <g data-from="quality-pass" data-to="b-out">
+      <polyline points="608,624 608,681" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="612,673 608,681 604,673" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="b-in" data-to="package">
+      <polyline points="1076,114 1076,149" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,141 1076,149 1072,141" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="package" data-to="deliverables">
+      <polyline points="1076,217 1076,247" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,239 1076,247 1072,239" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="deliverables" data-to="manual-review">
+      <polyline points="1076,315 1076,345" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,337 1076,345 1072,337" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="manual-review" data-to="approval">
+      <polyline points="1076,413 1076,433" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,425 1076,433 1072,425" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="1085" y="538" fill="#9cd2b2" font-size="14" font-weight="700" text-anchor="start">是</text>
+    <g data-from="approval" data-to="publish">
+      <polyline points="1076,521 1076,546" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,538 1076,546 1072,538" fill="none" stroke="#9cd2b2" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="publish" data-to="publish-end">
+      <polyline points="1076,614 1076,674" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1080,666 1076,674 1072,666" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="249" y="362" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">否</text>
+    <g data-from="source-valid" data-to="source-log">
+      <polyline points="236,371 356,371 356,430" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="360,422 356,430 352,422" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="source-log" data-to="source-end">
+      <polyline points="356,498 356,544" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="360,536 356,544 352,536" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="717" y="571" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">否</text>
+    <g data-from="quality-pass" data-to="candidate-log">
+      <polyline points="704,580 824,580 824,631" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="828,623 824,631 820,623" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <g data-from="candidate-log" data-to="candidate-end">
+      <polyline points="824,699 824,731" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="828,723 824,731 820,723" fill="none" stroke="#b1c1d0" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+    <text x="1185" y="468" fill="#eda0ab" font-size="14" font-weight="700" text-anchor="start">否</text>
+    <g data-from="approval" data-to="hold-end">
+      <polyline points="1172,477 1292,477 1292,551" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+      <polyline points="1296,543 1292,551 1288,543" fill="none" stroke="#eda0ab" stroke-width="1.6" stroke-linejoin="round" />
+    </g>
+  </g>
+  <g id="start" data-symbol="terminal">
+    <rect x="44" y="75" width="192" height="46" rx="23" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="140" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">开始</text>
+  </g>
+  <g id="input" data-symbol="data">
+    <polygon points="58,140 236,140 222,208 44,208" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="140" y="169" fill="#edf6ff" font-size="16" font-weight="700" text-anchor="middle">录播信息</text>
+    <text x="140" y="191" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">B 站链接或 BV 号 · 分 P</text>
+  </g>
+  <g id="fetch" data-symbol="process">
+    <rect x="44" y="230" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="140" y="251" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">获取源音轨</text>
+    <text x="140" y="271" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">最高带宽 DASH 音轨</text>
+    <text x="140" y="288" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">双声道 AAC · 44.1 / 48 kHz</text>
+  </g>
+  <g id="source-valid" data-symbol="decision">
+    <polygon points="140,327 236,371 140,415 44,371" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
+    <text x="140" y="377" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">源音轨合格？</text>
+  </g>
+  <g id="source-log" data-symbol="process">
+    <rect x="260" y="430" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="356" y="470" fill="#f7f9fc" font-size="17" font-weight="700" text-anchor="middle">记录源音轨失败原因</text>
+  </g>
+  <g id="source-end" data-symbol="terminal">
+    <rect x="260" y="544" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
+    <text x="356" y="573" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">结束该场处理</text>
+  </g>
+  <g id="transcribe" data-symbol="process">
+    <rect x="44" y="449" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="140" y="470" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">本地转写</text>
+    <text x="140" y="490" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">CPU 运行 Whisper small</text>
+    <text x="140" y="507" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">缓存词级时间戳</text>
+  </g>
+  <g id="detect" data-symbol="process">
+    <rect x="44" y="548" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="140" y="569" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">定位演唱区间</text>
+    <text x="140" y="589" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">区分演唱与说话</text>
+    <text x="140" y="606" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">标签覆盖 ≥95%</text>
+  </g>
+  <g id="a-out" data-symbol="connector">
+    <circle cx="140" cy="697" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="140" y="703" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">A</text>
+  </g>
+  <g id="a-in" data-symbol="connector">
+    <circle cx="608" cy="98" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="608" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">A</text>
+  </g>
+  <g id="identify" data-symbol="process">
+    <rect x="512" y="149" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="608" y="170" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">识别歌曲</text>
+    <text x="608" y="190" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">网易云歌词检索 · 召回 ≥40%</text>
+    <text x="608" y="207" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">可计算时 DTW ≥60%</text>
+  </g>
+  <g id="cut" data-symbol="process">
+    <rect x="512" y="247" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="608" y="263" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">精调切点</text>
+    <text x="608" y="280" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">FFmpeg 流复制</text>
+    <text x="608" y="295" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">静音 ≥500 ms · 说话 ≤8%</text>
+    <text x="608" y="310" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">时长偏差 ≤0.15 s</text>
+  </g>
+  <g id="align" data-symbol="process">
+    <rect x="512" y="345" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="608" y="366" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">对齐歌词</text>
+    <text x="608" y="386" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">Whisper 词级时间 + 拼音 DTW</text>
+    <text x="608" y="403" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">覆盖 ≥80% · 锚定 ≥85%</text>
+  </g>
+  <g id="check" data-symbol="process">
+    <rect x="512" y="443" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="608" y="459" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">执行质量检查</text>
+    <text x="608" y="476" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">相对 ASR 的中位误差 ≤0.30 s</text>
+    <text x="608" y="491" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">P95 ≤0.90 s</text>
+    <text x="608" y="506" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">可选 MiMo 音频抽查</text>
+  </g>
+  <g id="quality-pass" data-symbol="decision">
+    <polygon points="608,536 704,580 608,624 512,580" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
+    <text x="608" y="586" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">候选通过质检？</text>
+  </g>
+  <g id="candidate-log" data-symbol="process">
+    <rect x="728" y="631" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="824" y="660" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">记录拦截原因</text>
+    <text x="824" y="682" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">注明未通过的检查项</text>
+  </g>
+  <g id="candidate-end" data-symbol="terminal">
+    <rect x="728" y="731" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
+    <text x="824" y="760" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">结束当前候选</text>
+  </g>
+  <g id="b-out" data-symbol="connector">
+    <circle cx="608" cy="697" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="608" y="703" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">B</text>
+  </g>
+  <g id="b-in" data-symbol="connector">
+    <circle cx="1076" cy="98" r="16" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="1076" y="104" fill="#edf6ff" font-size="17" font-weight="700" text-anchor="middle">B</text>
+  </g>
+  <g id="package" data-symbol="process">
+    <rect x="980" y="149" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="1076" y="170" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">打包歌切成品</text>
+    <text x="1076" y="190" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">生成音频与字幕</text>
+    <text x="1076" y="207" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">写入待审核索引</text>
+  </g>
+  <g id="deliverables" data-symbol="data">
+    <polygon points="994,247 1172,247 1158,315 980,315" fill="#20344a" stroke="#7197c1" stroke-width="1.5" />
+    <text x="1076" y="268" fill="#edf6ff" font-size="16" font-weight="700" text-anchor="middle">待审核产物</text>
+    <text x="1076" y="288" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">M4A · LRC · ASS</text>
+    <text x="1076" y="305" fill="#d9e9fa" font-size="13" font-weight="400" text-anchor="middle">待审核曲库条目</text>
+  </g>
+  <g id="manual-review" data-symbol="manual">
+    <polygon points="980,345 1172,345 1157,413 995,413" fill="#302a46" stroke="#a391cb" stroke-width="1.5" />
+    <text x="1076" y="374" fill="#f2edff" font-size="16" font-weight="700" text-anchor="middle">人工抽听与核对</text>
+    <text x="1076" y="396" fill="#e0d9ef" font-size="13" font-weight="400" text-anchor="middle">确认播放及歌词时间轴</text>
+  </g>
+  <g id="approval" data-symbol="decision">
+    <polygon points="1076,433 1172,477 1076,521 980,477" fill="#3a301d" stroke="#d5a65f" stroke-width="1.5" />
+    <text x="1076" y="483" fill="#fff2d3" font-size="17" font-weight="700" text-anchor="middle">同意上架？</text>
+  </g>
+  <g id="hold-end" data-symbol="terminal">
+    <rect x="1196" y="551" width="192" height="46" rx="23" fill="#432932" stroke="#cf8995" stroke-width="1.5" />
+    <text x="1292" y="580" fill="#fff0f3" font-size="17" font-weight="700" text-anchor="middle">保留待审核</text>
+  </g>
+  <g id="publish" data-symbol="process">
+    <rect x="980" y="546" width="192" height="68" rx="0" fill="#23303e" stroke="#53687c" stroke-width="1.5" />
+    <text x="1076" y="567" fill="#f7f9fc" font-size="16" font-weight="700" text-anchor="middle">发布至网页曲库</text>
+    <text x="1076" y="587" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">合并通过审核的条目</text>
+    <text x="1076" y="604" fill="#cfdbea" font-size="13" font-weight="400" text-anchor="middle">放置音频并重建网页</text>
+  </g>
+  <g id="publish-end" data-symbol="terminal">
+    <rect x="980" y="674" width="192" height="46" rx="23" fill="#223e33" stroke="#78ad8c" stroke-width="1.5" />
+    <text x="1076" y="703" fill="#e9fff0" font-size="17" font-weight="700" text-anchor="middle">发布完成</text>
+  </g>
+</svg>

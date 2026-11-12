@@ -32,54 +32,9 @@
 
 ## 处理流程
 
-```mermaid
----
-config:
-  flowchart:
-    nodeSpacing: 22
-    rankSpacing: 26
-    wrappingWidth: 205
----
-flowchart LR
-    accTitle: 从 B 站录播到网页曲库
-    accDescr: 三个阶段展示如何获取录播、生成并质检歌切，以及审核后发布曲库。
-    subgraph capture["音轨获取与演唱检测"]
-        direction TB
-        recording(["B 站录播链接或 BV 号<br/>选择分 P"])
-        fetch["取最高带宽的 DASH 音轨<br/>双声道 AAC · 44.1 / 48 kHz"]
-        detect["本地 Whisper small<br/>缓存词级时间戳<br/>演唱与说话标签覆盖 ≥95%"]
-        recording --> fetch --> detect
-    end
+[![输入 B 站录播后校验源音轨，不合格则记录原因并结束该场。逐段识曲、切片、对齐歌词并质检，未通过的候选会被拦截并记录原因。通过的成品打包待审，人工审核同意后发布，其余保留待审。](docs/images/workflow-zh-CN.svg)](docs/images/workflow-zh-CN.svg)
 
-    subgraph process["识曲、精切与排轴"]
-        direction TB
-        identify["网易云歌词检索<br/>召回 ≥40% · 可算时 DTW ≥60%"]
-        cut["FFmpeg 流复制<br/>静音 ≥500 ms · 说话 ≤8%<br/>时长偏差 ≤0.15 s"]
-        align["Whisper 词级时间 + 拼音 DTW<br/>覆盖 ≥80% · 锚定 ≥85%<br/>相对 ASR 的中位误差 ≤0.30 s<br/>P95 ≤0.90 s"]
-        identify --> cut --> align
-    end
-
-    subgraph release["质检与发布"]
-        direction TB
-        gate{"质量检查通过？<br/>可选 MiMo 音频抽查"}
-        rejection["拦截候选<br/>记录原因"]
-        package["打包待审<br/>M4A · LRC · ASS<br/>待审核曲库索引"]
-        library(["人工抽听与核对<br/>发布至网页曲库"])
-        gate -->|通过| package --> library
-        gate -->|未通过| rejection
-    end
-
-    capture --> process --> release
-
-    classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
-    classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c
-    classDef withheld fill:#fceeee,stroke:#a75b60,color:#642a30
-    classDef published fill:#e8f6ed,stroke:#438461,color:#18452e
-    class recording entry
-    class gate checkpoint
-    class rejection withheld
-    class library published
-```
+符号与连线参照 [ISO 5807:1985](https://www.iso.org/standard/11955.html)。同字母圆形连接点（A、B）表示续接到下一阶段。
 
 [质量要求](docs/质量要求.md) · [实测结果](docs/指标与质量报告.md) · [架构说明](docs/架构说明.md)
 

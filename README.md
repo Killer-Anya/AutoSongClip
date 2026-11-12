@@ -32,54 +32,9 @@ The screenshots were captured from the deployed V1 player on November 10, 2026. 
 
 ## Workflow
 
-```mermaid
----
-config:
-  flowchart:
-    nodeSpacing: 22
-    rankSpacing: 26
-    wrappingWidth: 205
----
-flowchart LR
-    accTitle: From a Bilibili recording to the web song library
-    accDescr: Three phases show how recordings become checked song cuts and how approved tracks are published.
-    subgraph capture["Source and segmentation"]
-        direction TB
-        recording(["Bilibili URL or BV ID<br/>Select a video part"])
-        fetch["Fetch the best DASH audio<br/>Stereo AAC · 44.1 / 48 kHz"]
-        detect["Whisper small · CPU<br/>Cache word timestamps<br/>Text labels cover ≥95%"]
-        recording --> fetch --> detect
-    end
+[![The flow starts with a Bilibili recording. Invalid audio ends the session. Each detected singing segment is identified, cut, aligned and checked. A failed candidate is logged and rejected. Passing clips are packaged for manual review. Approved clips are published and unapproved clips remain pending.](docs/images/workflow-en.svg)](docs/images/workflow-en.svg)
 
-    subgraph process["Identify, cut and align"]
-        direction TB
-        identify["NetEase lyric search<br/>Recall ≥40% · DTW ≥60% if measurable"]
-        cut["FFmpeg stream copy<br/>Silence ≥500 ms · speech ≤8%<br/>Duration error ≤0.15 s"]
-        align["Whisper + pinyin DTW<br/>Coverage ≥80% · anchors ≥85%<br/>vs. ASR · median ≤0.30 s<br/>P95 ≤0.90 s"]
-        identify --> cut --> align
-    end
-
-    subgraph release["Review and publish"]
-        direction TB
-        gate{"Quality checks pass?<br/>Optional MiMo spot check"}
-        rejection["Reject and<br/>log the reason"]
-        package["Package for review<br/>M4A · LRC · ASS<br/>Pending catalog"]
-        library(["Listen and verify<br/>Publish to web library"])
-        gate -->|Pass| package --> library
-        gate -->|Fail| rejection
-    end
-
-    capture --> process --> release
-
-    classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
-    classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c
-    classDef withheld fill:#fceeee,stroke:#a75b60,color:#642a30
-    classDef published fill:#e8f6ed,stroke:#438461,color:#18452e
-    class recording entry
-    class gate checkpoint
-    class rejection withheld
-    class library published
-```
+Symbols follow [ISO 5807:1985](https://www.iso.org/standard/11955.html). Matching circles (A and B) continue the flow in the next phase.
 
 [Quality requirements](docs/质量要求.md#english) · [Measured results](docs/指标与质量报告.md#english-summary) · [Architecture notes](docs/架构说明.md)
 
