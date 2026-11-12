@@ -11,7 +11,7 @@ Submit a recording URL to extract performances, identify the songs, align their 
 - **VTuber**: 妮莉安Lily
 - **VTuber profile**: [妮莉安Lily on Bilibili](https://space.bilibili.com/3493271057730096?spm_id_from=333.337.0.0)
 - **Recording platform**: [Bilibili singing stream archive, November 26, 2023](https://www.bilibili.com/video/BV1ej411L7qb/) (example from the processing log)
-- **Player preview**: [http://127.0.0.1:18081/web/](http://127.0.0.1:18081/web/) (available on your computer after you start the player)
+- **Live player**: [Open the 妮莉安Lily song library](http://101.43.7.149:18081/web/)
 
 The screenshots were captured from the deployed V1 player on November 10, 2026. This repository includes the V2 pipeline and web player source. V2 is undergoing batch testing on the server.
 
@@ -31,6 +31,16 @@ The screenshots were captured from the deployed V1 player on November 10, 2026. 
 </table>
 
 ## Workflow
+
+```mermaid
+flowchart LR
+    input["Recording URL"] --> download["Fetch audio"]
+    download --> transcribe["Transcribe and segment"]
+    transcribe --> cut["Identify and cut"]
+    cut --> align["Align lyrics and verify"]
+    align --> package["Package clips"]
+    package --> publish["Review and publish"]
+```
 
 | Stage | How it works | Output and checks |
 | --- | --- | --- |

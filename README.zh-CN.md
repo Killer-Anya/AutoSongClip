@@ -11,7 +11,7 @@
 - **VTuber**：妮莉安Lily
 - **VTuber 主页**：[妮莉安Lily 的 B 站主页](https://space.bilibili.com/3493271057730096?spm_id_from=333.337.0.0)
 - **录播平台（B 站）**：[2023 年 11 月 26 日掉落歌回](https://www.bilibili.com/video/BV1ej411L7qb/)（处理日志中的录播样例）
-- **成品在线预览**：[http://127.0.0.1:18081/web/](http://127.0.0.1:18081/web/)（按快速开始启动后，在本机访问）
+- **成品在线预览**：[打开妮莉安Lily歌回曲库](http://101.43.7.149:18081/web/)
 
 截图采集于 2026 年 11 月 10 日，展示当时线上运行的 V1 播放器。本仓库提供 V2 切歌流水线和网页播放器源码。V2 在服务器上进行批次测试。
 
@@ -31,6 +31,16 @@
 </table>
 
 ## 处理流程
+
+```mermaid
+flowchart LR
+    input["B 站录播链接"] --> download["获取音轨"]
+    download --> transcribe["转写与演唱检测"]
+    transcribe --> cut["识曲与精调切点"]
+    cut --> align["歌词对齐与质检"]
+    align --> package["打包待审核成品"]
+    package --> publish["审核后上架"]
+```
 
 | 阶段 | 具体做法 | 输出与质量检查 |
 | --- | --- | --- |
