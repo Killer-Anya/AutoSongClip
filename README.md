@@ -38,24 +38,38 @@ config:
   flowchart:
     nodeSpacing: 22
     rankSpacing: 26
+    wrappingWidth: 205
 ---
-flowchart TB
+flowchart LR
     accTitle: From a Bilibili recording to the web song library
-    accDescr: The workflow extracts audio, finds performances, identifies songs, cuts audio and aligns lyrics. Rejected candidates are logged. Passing clips are packaged for manual review before publication.
-    recording(["Bilibili recording URL or BV ID · select a part"])
-    fetch["Fetch and check source audio<br/>Highest available DASH bitrate · stereo AAC · 44.1 or 48 kHz"]
-    detect["Transcribe and detect singing<br/>Whisper small on CPU · cache word timestamps<br/>Singing and speech labels cover ≥95% of transcript segments"]
-    identify["Identify songs and retrieve lyrics<br/>NetEase lyric search · pinyin matching<br/>Candidate recall ≥40% · alignment ≥60% where calculable"]
-    cut["Refine cut points and preserve the source audio<br/>Look for ≥500 ms of silence · FFmpeg stream copy<br/>Cut duration error ≤0.15 s · labeled speech ≤8%"]
-    align["Align lyrics and check quality<br/>Whisper word timestamps + pinyin DTW<br/>Lyric coverage ≥80% · anchors ≥85%<br/>ASR-relative timing error ≤0.30 s median and ≤0.90 s P95<br/>Optional MiMo audio spot checks"]
-    gate{"Candidate passes quality checks?"}
-    rejection["Reject the candidate<br/>Record the failed check"]
-    package["Package for manual review<br/>M4A audio · LRC lyrics · ASS subtitles · pending index"]
-    library(["Review playback and timing · publish to the web library"])
+    accDescr: Three phases show how recordings become checked song cuts and how approved tracks are published.
+    subgraph capture["Source and segmentation"]
+        direction TB
+        recording(["Bilibili URL or BV ID<br/>Select a video part"])
+        fetch["Fetch the best DASH audio<br/>Stereo AAC · 44.1 / 48 kHz"]
+        detect["Whisper small · CPU<br/>Cache word timestamps<br/>Text labels cover ≥95%"]
+        recording --> fetch --> detect
+    end
 
-    recording --> fetch --> detect --> identify --> cut --> align --> gate
-    gate -->|Pass| package --> library
-    gate -->|Fail| rejection
+    subgraph process["Identify, cut and align"]
+        direction TB
+        identify["NetEase lyric search<br/>Recall ≥40% · DTW ≥60% if measurable"]
+        cut["FFmpeg stream copy<br/>Silence ≥500 ms · speech ≤8%<br/>Duration error ≤0.15 s"]
+        align["Whisper + pinyin DTW<br/>Coverage ≥80% · anchors ≥85%<br/>vs. ASR · median ≤0.30 s<br/>P95 ≤0.90 s"]
+        identify --> cut --> align
+    end
+
+    subgraph release["Review and publish"]
+        direction TB
+        gate{"Quality checks pass?<br/>Optional MiMo spot check"}
+        rejection["Reject and<br/>log the reason"]
+        package["Package for review<br/>M4A · LRC · ASS<br/>Pending catalog"]
+        library(["Listen and verify<br/>Publish to web library"])
+        gate -->|Pass| package --> library
+        gate -->|Fail| rejection
+    end
+
+    capture --> process --> release
 
     classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
     classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c

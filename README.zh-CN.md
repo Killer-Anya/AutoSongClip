@@ -38,24 +38,38 @@ config:
   flowchart:
     nodeSpacing: 22
     rankSpacing: 26
+    wrappingWidth: 205
 ---
-flowchart TB
+flowchart LR
     accTitle: 从 B 站录播到网页曲库
-    accDescr: 依次获取音轨、检测演唱、识曲、切片和对齐歌词。未达标候选记录拦截原因，通过的成品由人工审核后发布。
-    recording(["B 站录播链接或 BV 号 · 选择分 P"])
-    fetch["获取并校验音轨<br/>选最高可用带宽的 DASH 音轨 · 双声道 AAC · 44.1 或 48 kHz"]
-    detect["转写并定位演唱<br/>本地 Whisper small · 缓存词级时间戳<br/>演唱与说话标签覆盖 ≥95% 的转写句子"]
-    identify["识曲并检索歌词<br/>网易云歌词检索 · 拼音匹配<br/>候选召回 ≥40% · 可计算时对齐率 ≥60%"]
-    cut["精调切点并保留原码流<br/>寻找 ≥500 ms 的静音 · FFmpeg 流复制<br/>切片时长偏差 ≤0.15 s · 标注说话占比 ≤8%"]
-    align["对齐歌词并质检<br/>Whisper 词级时间戳 + 拼音 DTW<br/>歌词覆盖 ≥80% · 锚定 ≥85%<br/>相对 ASR 的时间误差中位 ≤0.30 s · P95 ≤0.90 s<br/>可选 MiMo 音频抽查"]
-    gate{"候选通过质检？"}
-    rejection["拦截候选<br/>记录未通过的检查项"]
-    package["打包待人工审核<br/>M4A 音频 · LRC 歌词 · ASS 字幕 · 待审核索引"]
-    library(["人工核对播放与时间轴 · 发布至网页曲库"])
+    accDescr: 三个阶段展示如何获取录播、生成并质检歌切，以及审核后发布曲库。
+    subgraph capture["音轨获取与演唱检测"]
+        direction TB
+        recording(["B 站录播链接或 BV 号<br/>选择分 P"])
+        fetch["取最高带宽的 DASH 音轨<br/>双声道 AAC · 44.1 / 48 kHz"]
+        detect["本地 Whisper small<br/>缓存词级时间戳<br/>演唱与说话标签覆盖 ≥95%"]
+        recording --> fetch --> detect
+    end
 
-    recording --> fetch --> detect --> identify --> cut --> align --> gate
-    gate -->|通过| package --> library
-    gate -->|未通过| rejection
+    subgraph process["识曲、精切与排轴"]
+        direction TB
+        identify["网易云歌词检索<br/>召回 ≥40% · 可算时 DTW ≥60%"]
+        cut["FFmpeg 流复制<br/>静音 ≥500 ms · 说话 ≤8%<br/>时长偏差 ≤0.15 s"]
+        align["Whisper 词级时间 + 拼音 DTW<br/>覆盖 ≥80% · 锚定 ≥85%<br/>相对 ASR 的中位误差 ≤0.30 s<br/>P95 ≤0.90 s"]
+        identify --> cut --> align
+    end
+
+    subgraph release["质检与发布"]
+        direction TB
+        gate{"质量检查通过？<br/>可选 MiMo 音频抽查"}
+        rejection["拦截候选<br/>记录原因"]
+        package["打包待审<br/>M4A · LRC · ASS<br/>待审核曲库索引"]
+        library(["人工抽听与核对<br/>发布至网页曲库"])
+        gate -->|通过| package --> library
+        gate -->|未通过| rejection
+    end
+
+    capture --> process --> release
 
     classDef entry fill:#e9f3ff,stroke:#4773a9,color:#142d4c
     classDef checkpoint fill:#fff4dc,stroke:#a5742c,color:#49320c
