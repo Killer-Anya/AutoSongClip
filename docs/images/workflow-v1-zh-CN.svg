@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500"
      role="img" aria-labelledby="title description" xml:lang="zh-CN">
   <title id="title">V1 从录播到网页曲库的处理流程</title>
-  <desc id="description">获取 B 站录播音轨，用本地 Whisper 转写，再由 GLM 标记演唱与说话。匹配网易云参考歌词以识曲，用 FFmpeg 原音轨流复制切片，以拼音和动态时间规整对齐歌词。人工抽听核对切点与歌词，通过后发布到网页曲库。</desc>
+  <desc id="description">获取 B 站录播音轨，用本地 CPU 运行 faster-whisper small INT8 转写，再由 GLM-5.3-Flash 逐句分类。合并间隔不超过 22 秒的演唱句，只保留至少 60 秒的区间。匹配网易云参考歌词以识曲，用 FFmpeg 原音轨流复制首末演唱句之间的片段，不额外预留前后时长。以拼音和动态时间规整对齐歌词，检查锚定率和歌词覆盖率，再人工抽听核对切点与歌词。通过后发布到网页曲库。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="7.5" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1 0 8 4 1 8Z" fill="#b4c3d2"/>
@@ -94,13 +94,13 @@
   <g id="transcription" data-symbol="process">
     <rect class="node process" x="64" y="356" width="264" height="58"/>
     <text class="label" x="196" y="382">Whisper 转写</text>
-    <text class="detail" x="196" y="402">在本地 CPU 上运行</text>
+    <text class="detail" x="196" y="402">small INT8 · 300 秒分块</text>
   </g>
 
   <g id="classification" data-symbol="process">
     <rect class="node process" x="448" y="92" width="264" height="58"/>
     <text class="label" x="580" y="118">定位演唱片段</text>
-    <text class="detail" x="580" y="138">GLM 标记演唱与说话</text>
+    <text class="detail" x="580" y="138">GLM-5.3-Flash · 间隔 ≤22 秒</text>
   </g>
   <g id="identification" data-symbol="process">
     <rect class="node process" x="448" y="180" width="264" height="58"/>
@@ -110,12 +110,12 @@
   <g id="cut" data-symbol="process">
     <rect class="node process" x="448" y="268" width="264" height="58"/>
     <text class="label" x="580" y="294">切出演唱片段</text>
-    <text class="detail" x="580" y="314">FFmpeg 原音轨流复制</text>
+    <text class="detail" x="580" y="314">FFmpeg 流复制 · 首尾不留白</text>
   </g>
   <g id="alignment" data-symbol="process">
     <rect class="node process" x="448" y="356" width="264" height="58"/>
     <text class="label" x="580" y="382">对齐歌词</text>
-    <text class="detail" x="580" y="402">拼音与动态时间规整（DTW）</text>
+    <text class="detail" x="580" y="402">拼音 DTW · 锚定率 ≥85%</text>
   </g>
 
   <g id="review" data-symbol="manual">

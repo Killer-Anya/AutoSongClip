@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500"
      role="img" aria-labelledby="title description" xml:lang="en">
   <title id="title">V1 workflow from recording to web song library</title>
-  <desc id="description">Fetch a Bilibili audio track, transcribe it with Whisper on the CPU, and use GLM text labels to find singing. Identify the song using NetEase reference lyrics, cut the original audio with FFmpeg, and align the lyrics using pinyin and dynamic time warping. Listen to the clip and verify its boundaries and lyrics. Publish approved clips to the web library.</desc>
+  <desc id="description">Fetch a Bilibili audio track and transcribe it with faster-whisper small INT8 on the CPU. GLM-5.3-Flash labels sentences. Join sung sentences across gaps of up to 22 seconds and retain spans of at least 60 seconds. Identify the song using NetEase reference lyrics and use FFmpeg to copy the span from the first to last sung sentence without padding. Align lyrics with pinyin and dynamic time warping. Check anchor and lyric coverage, listen to the clip and verify the boundaries and lyrics, then publish approved clips.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="7.5" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M1 0 8 4 1 8Z" fill="#b4c3d2"/>
@@ -94,13 +94,13 @@
   <g id="transcription" data-symbol="process">
     <rect class="node process" x="64" y="356" width="264" height="58"/>
     <text class="label" x="196" y="382">Transcribe with Whisper</text>
-    <text class="detail" x="196" y="402">Local CPU inference</text>
+    <text class="detail" x="196" y="402">small INT8 · 300 s chunks</text>
   </g>
 
   <g id="classification" data-symbol="process">
     <rect class="node process" x="448" y="92" width="264" height="58"/>
     <text class="label" x="580" y="118">Find singing passages</text>
-    <text class="detail" x="580" y="138">GLM labels singing and speech</text>
+    <text class="detail" x="580" y="138">GLM-5.3-Flash · gap ≤22 s</text>
   </g>
   <g id="identification" data-symbol="process">
     <rect class="node process" x="448" y="180" width="264" height="58"/>
@@ -110,12 +110,12 @@
   <g id="cut" data-symbol="process">
     <rect class="node process" x="448" y="268" width="264" height="58"/>
     <text class="label" x="580" y="294">Cut the performance</text>
-    <text class="detail" x="580" y="314">FFmpeg stream copy</text>
+    <text class="detail" x="580" y="314">FFmpeg copy · no added padding</text>
   </g>
   <g id="alignment" data-symbol="process">
     <rect class="node process" x="448" y="356" width="264" height="58"/>
     <text class="label" x="580" y="382">Align the lyrics</text>
-    <text class="detail" x="580" y="402">Pinyin and DTW</text>
+    <text class="detail" x="580" y="402">Pinyin DTW · ≥85% anchors</text>
   </g>
 
   <g id="review" data-symbol="manual">
