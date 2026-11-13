@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500"
+     role="img" aria-labelledby="title description" xml:lang="zh-CN">
+  <title id="title">V1 从录播到网页曲库的处理流程</title>
+  <desc id="description">获取 B 站录播音轨，用本地 Whisper 转写，再由 GLM 标记演唱与说话。匹配网易云参考歌词以识曲，用 FFmpeg 原音轨流复制切片，以拼音和动态时间规整对齐歌词。人工抽听核对切点与歌词，通过后发布到网页曲库。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7.5" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 0 8 4 1 8Z" fill="#b4c3d2"/>
+    </marker>
+    <marker id="arrow-pass" markerWidth="8" markerHeight="8" refX="7.5" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 0 8 4 1 8Z" fill="#a9d4b7"/>
+    </marker>
+    <marker id="arrow-hold" markerWidth="8" markerHeight="8" refX="7.5" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 0 8 4 1 8Z" fill="#e9abb7"/>
+    </marker>
+    <style>
+      text {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        text-anchor: middle;
+      }
+      .panel { fill: #1c242d; stroke: #485562; }
+      .divider { stroke: #485562; }
+      .heading { fill: #f4f7fb; font-size: 23px; font-weight: 700; }
+      .label { fill: #f4f7fb; font-size: 21px; font-weight: 650; }
+      .detail { fill: #cbd6e1; font-size: 17px; }
+      .process { fill: #26323e; stroke: #697987; }
+      .terminal, .data { fill: #deebfa; stroke: #83a9d4; }
+      .terminal-text, .data-text { fill: #132f4e; }
+      .data-detail { fill: #284867; }
+      .manual { fill: #ebe4f8; stroke: #a69acb; }
+      .manual-text { fill: #39294f; }
+      .manual-detail { fill: #503d67; }
+      .decision { fill: #fff2d6; stroke: #d5a160; }
+      .decision-text { fill: #463112; }
+      .published { fill: #ddf2e7; stroke: #8bb5a0; }
+      .published-text { fill: #204837; }
+      .hold { fill: #f9e7ea; stroke: #c47985; }
+      .hold-text { fill: #662d39; }
+      .node { stroke-width: 1.4; }
+      .flow { fill: none; stroke: #b4c3d2; stroke-width: 1.8; stroke-linejoin: round; marker-end: url(#arrow); }
+      .pass-flow { stroke: #a9d4b7; marker-end: url(#arrow-pass); }
+      .hold-flow { stroke: #e9abb7; marker-end: url(#arrow-hold); }
+      .branch-label { font-size: 16px; font-weight: 700; }
+      .pass-label { fill: #a9d4b7; }
+      .hold-label { fill: #e9abb7; }
+    </style>
+  </defs>
+
+  <rect width="1160" height="500" rx="16" fill="#10151c"/>
+  <g id="phase-source">
+    <rect class="panel" x="20" y="16" width="352" height="468" rx="12"/>
+    <path class="divider" d="M40 67H352"/>
+    <text class="heading" x="196" y="49">音轨获取与转写</text>
+  </g>
+  <g id="phase-clipping">
+    <rect class="panel" x="404" y="16" width="352" height="468" rx="12"/>
+    <path class="divider" d="M424 67H736"/>
+    <text class="heading" x="580" y="49">识曲、切片与排轴</text>
+  </g>
+  <g id="phase-review">
+    <rect class="panel" x="788" y="16" width="352" height="468" rx="12"/>
+    <path class="divider" d="M808 67H1120"/>
+    <text class="heading" x="964" y="49">人工审核与发布</text>
+  </g>
+
+  <g id="flow-lines">
+    <path class="flow" data-from="start" data-to="source" d="M196 141V179"/>
+    <path class="flow" data-from="source" data-to="audio" d="M196 238V267"/>
+    <path class="flow" data-from="audio" data-to="transcription" d="M196 326V355"/>
+    <path class="flow" data-from="transcription" data-to="classification" d="M328 385H388V121H447"/>
+    <path class="flow" data-from="classification" data-to="identification" d="M580 150V179"/>
+    <path class="flow" data-from="identification" data-to="cut" d="M580 238V267"/>
+    <path class="flow" data-from="cut" data-to="alignment" d="M580 326V355"/>
+    <path class="flow" data-from="alignment" data-to="review" d="M712 385H772V121H831"/>
+    <path class="flow" data-from="review" data-to="decision" d="M964 150V179"/>
+    <path class="flow pass-flow" data-from="decision" data-to="publish" d="M856 236H843V296H877V339"/>
+    <path class="flow hold-flow" data-from="decision" data-to="held" d="M1072 236H1085V296H1051V339"/>
+    <path class="flow" data-from="publish" data-to="published" d="M877 398V424"/>
+    <text class="branch-label pass-label" x="855" y="320">是</text>
+    <text class="branch-label hold-label" x="1074" y="320">否</text>
+  </g>
+
+  <g id="start" data-symbol="terminal">
+    <rect class="node terminal" x="134" y="99" width="124" height="42" rx="21"/>
+    <text class="label terminal-text" x="196" y="127">开始</text>
+  </g>
+  <g id="source" data-symbol="data">
+    <polygon class="node data" points="83,180 328,180 309,238 64,238"/>
+    <text class="label data-text" x="196" y="215">B 站录播链接</text>
+  </g>
+  <g id="audio" data-symbol="process">
+    <rect class="node process" x="64" y="268" width="264" height="58"/>
+    <text class="label" x="196" y="304">获取原始音轨</text>
+  </g>
+  <g id="transcription" data-symbol="process">
+    <rect class="node process" x="64" y="356" width="264" height="58"/>
+    <text class="label" x="196" y="382">Whisper 转写</text>
+    <text class="detail" x="196" y="402">在本地 CPU 上运行</text>
+  </g>
+
+  <g id="classification" data-symbol="process">
+    <rect class="node process" x="448" y="92" width="264" height="58"/>
+    <text class="label" x="580" y="118">定位演唱片段</text>
+    <text class="detail" x="580" y="138">GLM 标记演唱与说话</text>
+  </g>
+  <g id="identification" data-symbol="process">
+    <rect class="node process" x="448" y="180" width="264" height="58"/>
+    <text class="label" x="580" y="206">识别歌曲</text>
+    <text class="detail" x="580" y="226">匹配网易云参考歌词</text>
+  </g>
+  <g id="cut" data-symbol="process">
+    <rect class="node process" x="448" y="268" width="264" height="58"/>
+    <text class="label" x="580" y="294">切出演唱片段</text>
+    <text class="detail" x="580" y="314">FFmpeg 原音轨流复制</text>
+  </g>
+  <g id="alignment" data-symbol="process">
+    <rect class="node process" x="448" y="356" width="264" height="58"/>
+    <text class="label" x="580" y="382">对齐歌词</text>
+    <text class="detail" x="580" y="402">拼音与动态时间规整（DTW）</text>
+  </g>
+
+  <g id="review" data-symbol="manual">
+    <polygon class="node manual" points="832,92 1096,92 1078,150 850,150"/>
+    <text class="label manual-text" x="964" y="118">人工抽听与核对</text>
+    <text class="detail manual-detail" x="964" y="138">检查切点和歌词</text>
+  </g>
+  <g id="decision" data-symbol="decision">
+    <polygon class="node decision" points="964,180 1072,236 964,292 856,236"/>
+    <text class="label decision-text" x="964" y="230">通过</text>
+    <text class="label decision-text" x="964" y="252">审核？</text>
+  </g>
+  <g id="publish" data-symbol="process">
+    <rect class="node process" x="804" y="340" width="146" height="58"/>
+    <text class="label" x="877" y="366">生成曲库</text>
+    <text class="detail" x="877" y="386">音频与 LRC</text>
+  </g>
+  <g id="held" data-symbol="terminal">
+    <rect class="node hold" x="978" y="340" width="146" height="58" rx="29"/>
+    <text class="label hold-text" x="1051" y="376">暂缓发布</text>
+  </g>
+  <g id="published" data-symbol="terminal">
+    <rect class="node published" x="804" y="425" width="146" height="43" rx="21.5"/>
+    <text class="label published-text" x="877" y="454">网页曲库</text>
+  </g>
+</svg>

@@ -6,6 +6,8 @@
 
 [项目案例](#项目案例) · [处理流程](#处理流程) · [快速开始](#快速开始) · [技术栈](#技术栈) · [质量要求](#质量要求) · [开发日志](#开发日志)
 
+**项目状态**：项目已结束。线上保留 V1 歌切流程产出的 235 首曲目，V2 歌切流程留作历史实验。[V2 试运行与回退复盘](docs/项目复盘.md#简体中文)
+
 ## 项目案例
 
 - **VTuber**：妮莉安Lily
@@ -13,7 +15,7 @@
 - **录播平台（B 站）**：[2023 年 11 月 26 日掉落歌回](https://www.bilibili.com/video/BV1ej411L7qb/)（处理日志中的录播样例）
 - **成品在线预览**：[打开妮莉安Lily歌回曲库](http://101.43.7.149:18081/web/)
 
-截图采集于 2026 年 11 月 13 日，展示本地运行的新版播放器和案例曲库。桌面采用黑胶封面与同步歌词的双栏布局，手机和桌面均支持中英文切换。本仓库还提供 V2 切歌流水线源码。
+截图采集于 2026 年 11 月 13 日，展示本地运行的新版播放器和案例曲库。桌面采用黑胶封面与同步歌词的双栏布局，手机和桌面均支持中英文切换。
 
 > **版权与下架**。案例中的录播、演唱音频、歌词、封面和角色形象等内容，其权利归各自权利人所有。案例截图用于说明项目功能。如您是权利人，认为展示内容侵犯了您的权益，请联系维护者，提供内容链接、涉及素材和权利说明。维护者将核实并处理下架或更正请求。请勿在公开 Issue 中提交个人信息或权属文件。[联系维护者](https://github.com/Killer-Anya/AutoSongClip/issues/new)
 
@@ -32,11 +34,9 @@
 
 ## 处理流程
 
-[![输入 B 站录播后获取并校验音轨，转写并定位演唱。逐段识曲、切片、排轴并质检。未通过的候选记录原因。通过的成品打包并经人工审核后发布，其余保留待审核。](docs/images/workflow-zh-CN.svg)](docs/images/workflow-zh-CN.svg)
+[![V1 处理流程：从 B 站获取原始音轨，本地转写并标出演唱。识曲后截取连续片段、对齐歌词，人工抽听通过后发布。](docs/images/workflow-v1-zh-CN.svg)](docs/images/workflow-v1-zh-CN.svg)
 
-流程图符号参照 [ISO 5807:1985](https://www.iso.org/standard/11955.html)。
-
-[质量要求](docs/质量要求.md) · [实测结果](docs/指标与质量报告.md) · [架构说明](docs/架构说明.md)
+[线上 V1 技术方案](docs/V1-技术方案.md) · [V1 听审要点](docs/质量要求.md) · [V2 实验指标](docs/指标与质量报告.md)
 
 ## 快速开始
 
@@ -48,60 +48,25 @@
 
 Linux 可在解压后的目录运行 `python3 site/server.py 18081 --open`。如果 18081 已占用，可在这条命令里改用其他端口。
 
-### 配置后处理第一段录播
+### 处理自己的录播
 
-完整切歌在 Linux 上运行。先在解压后的目录安装依赖，再下载 CTranslate2 格式的 Whisper small。Ubuntu 或 Debian 可执行以下命令。
-
-```bash
-sudo apt install python3 python3-venv ffmpeg util-linux procps
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -c "from huggingface_hub import snapshot_download; snapshot_download('Systran/faster-whisper-small', local_dir='models/small')"
-```
-
-| 你手头的条件 | 使用方式 |
-| --- | --- |
-| 有文本判断服务和 MiMo 音频接口 | 服务器用 GLM-5.3-Flash 做文本判断，用 MiMo-V2.6-Flash 做音频抽查。公开版默认使用本机 18090 端口上的兼容代理。自备文本服务可按[配置示例](docs/架构说明.md#文本服务与资源配置)设置 `JUDGE_API`、`JUDGE_HEALTH`、`JUDGE_MODEL`、`JUDGE_KEY`。同济代理的密钥通过 `TONGJI_API_KEY` 提供。 |
-| 有文本判断服务，暂时没有 MiMo | 使用下方的无 MiMo 命令。本地 Whisper 和歌词质检照常运行，音频复核记为 `skipped`。线上 V1 已验证过「本地转写＋GLM 文本判断＋人工抽听」的做法。公开版沿用这种分工，仍使用 V2 的歌词质检门槛。 |
-| 有源音轨和转写缓存，暂时没有模型 API | 可用已在服务器验证过的缓存重处理入口 `python3 pipeline/pipe_offline.py <BV号> [分P]`。需要 `res/<场次>.m4a`、`queue/asr_v3/<场次>.jsonl` 及本地歌词语料或曲库。找不到歌词时可能访问网易云音乐。已有缓存可以复用，新的转写可按[队列说明](queue/README.md)预生成。 |
-
-把示例中的网址、标题和日期换成你自己的录播。链接内的 `?p=2` 会选择第 2 P。下例显式关闭三处 MiMo 调用，仍使用你已配置的文本判断服务。
-
-```bash
-MIMO_VERIFY=0 MIMO_ASR=0 MIMO_ANCHOR=0 python3 pipeline/pipe_v3.py \
-  'https://www.bilibili.com/video/BV1xxxxxxxxx/?p=2' '场次标题' 2026-01-01
-```
-
-结果写入 `library/` 和 `queue/songs_index_new.json`。发布前，确保待审核索引中仅保留已确认上架的条目。按索引的相对路径把对应 M4A 放进 `site/audio/`，再运行 `python3 tools/publish_new.py` 生成曲库页面。批量任务的输入格式见[队列说明](queue/README.md)。
-
-### 已验证的低配基线
-
-| 项目 | 服务器实测环境（2026-11-12） |
-| --- | --- |
-| CPU 与内存 | 2 vCPU（AMD EPYC 7K62），3,723 MiB 内存，约 2 GiB Swap。本地转写使用 CPU。 |
-| 系统与工具 | Ubuntu 24.04.4 LTS、Python 3.12.3、项目自备 FFmpeg / FFprobe 静态构建 `n9.0.2-17-g2a571b6068`。 |
-| 磁盘 | 服务器卷约 69 GB，记录时可用约 36 GB。音轨、转写缓存和成品会占用额外空间。 |
-| 运行方式与样本 | 单路串行。V2 最近 15 场从下载到打包的用时中位约 31 分钟。交接记录中，命中转写缓存约 10 分钟，冷启动约 35–50 分钟。 |
-
-可用内存低于 1,200 MB 时，脚本默认推迟转写。运行中低于 350 MB 时会退出以释放资源。表格是复现实测的低配参考，更小机器的稳定运行范围仍需实测。以上用时随录播时长、缓存和接口状态变化。
+双击启动器可打开播放器。[V1 技术方案](docs/V1-技术方案.md)说明线上曲库是怎么做出来的。仓库中可运行的批处理命令、模型配置和服务器实测环境单列在 [V2 实验复现说明](docs/V2-复现说明.md)。
 
 ## 技术栈
 
-| 模块 | 技术与职责 |
+| V1 环节 | 实现方式 |
 | --- | --- |
-| 音轨采集 | Python 标准库请求 B 站视频元数据和 DASH 音轨。播放器从本地文件目录读取已审核音频。 |
-| 媒体处理 | PyAV 解码与重采样用于分析，NumPy 计算能量和静音。FFmpeg 流复制切片、FFprobe 核对音频参数，FFmpeg `ebur128` 测量响度与真峰值。 |
-| 本地识别与对齐 | faster-whisper / CTranslate2 负责 CPU INT8 转写。zhconv 统一简繁体，pypinyin 提取拼音，项目内的 DTW 和局部重锚处理重复段与缺失行。 |
-| 外部服务 | OpenAI 兼容接口承载 GLM 文本判断和 MiMo 音频复核。网易云音乐提供候选歌曲与参考歌词。 |
-| 队列与发布 | Python 入口负责单场、队列与缓存重处理。JSON / JSONL 记录队列、缓存和质检。服务器用 systemd 托管，Bash、`flock` 和 `free` 控制并发与内存。 |
-| 网页播放器 | 原生 HTML、CSS、JavaScript 和 `HTMLAudioElement`。Python 标准库预览服务支持 HTTP Range，便于拖动进度。 |
+| 音源与切片 | 获取 B 站原始音轨，使用 FFmpeg 流复制，保留连续的演唱片段。 |
+| 转写与分段 | 本地 Whisper 生成时间戳，GLM 根据文本区分演唱与说话等内容，帮助定位演唱。 |
+| 识曲与歌词 | 网易云音乐提供候选歌名与参考歌词，以本地转写为参照同步歌词。 |
+| 审核与发布 | 人工抽听、核对曲目后发布到网页曲库。线上 V1 没有用 MiMo。 |
+| 网页播放 | HTML、CSS、JavaScript 和 `HTMLAudioElement`。随包提供的 Python 预览支持字节范围请求，可拖动播放进度。 |
 
-目录按职责组织。`pipeline/` 是处理入口，`lib/` 实现各阶段，`tools/` 管理审核和发布，`site/` 是播放器，`docs/` 是说明文档。
+公开的 `pipeline/`、`lib/`、`tools/` 包含 V2 实现与配套工具，`site/` 提供播放器预览。
 
 ## 质量要求
 
-项目参考 ITU-R BS.1770 和 EBU R 128 的音频测量方法，以及 Netflix 的字幕对齐和可读性指南，再按长录播、原码流保留和逐行歌词的需要设定阈值。**行业文件定义测量方法和交付原则，表中的百分比和时间门槛是本项目的验收值。** 响度用于测量和告警，歌曲保持原始音量。对齐指标以本地转写为参照，实际演唱的误差需要独立听审或人工标注来确认。[质量要求与参考来源](docs/质量要求.md) · [实测样本](docs/指标与质量报告.md)
+V1 优先保留连贯的演唱主体，少数片段的前奏或尾音略短。审核时对照原录播抽听首尾，确认歌名和歌词时间轴。仓库中的量化门槛和统计数据属于 V2 实验。[V1 听审清单与 V2 质量参考](docs/质量要求.md)
 
 ## 开发日志
 
