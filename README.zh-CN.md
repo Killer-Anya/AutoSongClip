@@ -13,15 +13,15 @@
 - **录播平台（B 站）**：[2023 年 11 月 26 日掉落歌回](https://www.bilibili.com/video/BV1ej411L7qb/)（处理日志中的录播样例）
 - **成品在线预览**：[打开妮莉安Lily歌回曲库](http://101.43.7.149:18081/web/)
 
-截图采集于 2026 年 11 月 10 日，展示当时线上运行的 V1 播放器。本仓库提供 V2 切歌流水线和网页播放器源码。V2 在服务器上进行批次测试。
+截图采集于 2026 年 11 月 13 日，展示本地运行的新版播放器和案例曲库。桌面采用黑胶封面与同步歌词的双栏布局，手机和桌面均支持中英文切换。本仓库还提供 V2 切歌流水线源码。
 
-> **版权与下架**。案例中的录播、演唱音频、歌词、封面和角色形象等内容，其权利归各自权利人所有。案例截图用于说明项目功能。如您是权利人，认为展示内容侵犯了您的权益，请联系维护者，提供内容链接、涉及素材和权利说明。维护者将核实并处理下架或更正请求。请勿在公开 Issue 中提交个人信息或权属文件。[联系维护者](https://github.com/Killer-Anya/songcut/issues/new)
+> **版权与下架**。案例中的录播、演唱音频、歌词、封面和角色形象等内容，其权利归各自权利人所有。案例截图用于说明项目功能。如您是权利人，认为展示内容侵犯了您的权益，请联系维护者，提供内容链接、涉及素材和权利说明。维护者将核实并处理下架或更正请求。请勿在公开 Issue 中提交个人信息或权属文件。[联系维护者](https://github.com/Killer-Anya/AutoSongClip/issues/new)
 
 <table>
   <tr>
-    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="375" alt="桌面播放器显示封面、同步歌词和进度控制"></td>
-    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="375" alt="手机播放器显示封面、当前歌词和播放控制"></td>
-    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="375" alt="手机曲库按演唱日期筛选"></td>
+    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="280" alt="宽屏播放器展示封面、黑胶和居中同步歌词"></td>
+    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="280" alt="手机播放器显示封面、当前歌词和播放控制"></td>
+    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="280" alt="手机曲库按演唱日期筛选"></td>
   </tr>
   <tr>
     <td align="center">桌面播放器</td>
@@ -42,7 +42,7 @@
 
 ### 下载、解压、双击预览
 
-1. 打开 [下载 ZIP](https://github.com/Killer-Anya/songcut/archive/refs/heads/main.zip)，解压整个文件夹。
+1. 打开 [下载 ZIP](https://github.com/Killer-Anya/AutoSongClip/archive/refs/heads/main.zip)，解压整个文件夹。
 2. 安装 [Python 3.10 或以上](https://www.python.org/downloads/)。macOS 双击 `Start SongCut.command`，Windows 双击 `Start SongCut.bat`。
 3. 启动器会打开本地播放器。使用期间保留启动窗口。预览只需要 Python，初始曲库为空。用已有曲库预览时，按[播放器说明](site/README.md)放入索引和音频。
 

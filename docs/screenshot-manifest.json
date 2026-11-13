@@ -5,25 +5,25 @@
       390,
       844
     ],
-    "bytes": 32273,
-    "sha256": "39c53e9c010d3abe43fc3d5b886abd82a58990e4c1ceb2899ebc7a3cbdecf834",
-    "captured": "2026-11-10",
-    "version": "V1 online demonstration",
-    "state": "date filter: 2026/10/31, 12 of 235",
-    "type": "unaltered browser viewport capture; not a physical-device photograph"
+    "bytes": 34655,
+    "sha256": "2b4073ecd7c633e7752561ec02b70ccea2e375f901ca3c64d6fa4934a66944c1",
+    "captured": "2026-11-13",
+    "version": "Updated web player, local case-study preview",
+    "state": "performance date filter 2026/10/31, 12 of 235",
+    "type": "unaltered browser viewport capture"
   },
   {
     "file": "docs/images/player-desktop.jpg",
     "dimensions": [
-      1024,
-      960
+      1920,
+      1080
     ],
-    "bytes": 82590,
-    "sha256": "7a66c9d0a5dbca46dabb284bafcfcf902c6e1a185a249d77a83e0dc52dbc6e09",
-    "captured": "2026-11-10",
-    "version": "V1 online demonstration",
-    "state": "paused, 20.50 s",
-    "type": "unaltered browser viewport capture; not a physical-device photograph"
+    "bytes": 156218,
+    "sha256": "9366b68077e77c5d52f34877dd43d8958de4a2bf54928119660e51187ed1c3c4",
+    "captured": "2026-11-13",
+    "version": "Updated web player, local case-study preview",
+    "state": "paused at 25.00 s, Chinese interface",
+    "type": "unaltered browser viewport capture"
   },
   {
     "file": "docs/images/player-mobile.jpg",
@@ -31,11 +31,11 @@
       390,
       844
     ],
-    "bytes": 52501,
-    "sha256": "875eeb442908beb21a50f23f51b7d09d1ed3f2d82abfb7f290ad7e16a80b8722",
-    "captured": "2026-11-10",
-    "version": "V1 online demonstration",
-    "state": "paused, 20.50 s",
-    "type": "unaltered browser viewport capture; not a physical-device photograph"
+    "bytes": 51452,
+    "sha256": "8c99e161182ea19926d107188ba29cb24fed5b52c5f3be5d0f45a53dc378c728",
+    "captured": "2026-11-13",
+    "version": "Updated web player, local case-study preview",
+    "state": "paused at 25.00 s, Chinese interface",
+    "type": "unaltered browser viewport capture"
   }
 ]

@@ -13,15 +13,15 @@ Submit a recording URL to extract performances, identify the songs, align their 
 - **Recording platform**: [Bilibili singing stream archive, November 26, 2023](https://www.bilibili.com/video/BV1ej411L7qb/) (example from the processing log)
 - **Live player**: [Open the 妮莉安Lily song library](http://101.43.7.149:18081/web/)
 
-The screenshots were captured from the deployed V1 player on November 10, 2026. This repository includes the V2 pipeline and web player source. V2 is undergoing batch testing on the server.
+The screenshots were captured on November 13, 2026 from the updated player running locally with the case-study library. The desktop layout pairs a rotating record with synchronized lyrics. Both layouts offer a Chinese and English interface. This repository also includes the V2 clipping pipeline.
 
-> **Copyright and takedown.** The recordings, performances, lyrics, cover artwork, and character imagery shown in this case study belong to their respective rights holders. The screenshots illustrate the project. If you believe any displayed material infringes your rights, contact the maintainer with a link, the material at issue, and a description of your rights. The maintainer will review removal or correction requests. Keep personal information and proof of ownership out of public issues. [Contact the maintainer](https://github.com/Killer-Anya/songcut/issues/new)
+> **Copyright and takedown.** The recordings, performances, lyrics, cover artwork, and character imagery shown in this case study belong to their respective rights holders. The screenshots illustrate the project. If you believe any displayed material infringes your rights, contact the maintainer with a link, the material at issue, and a description of your rights. The maintainer will review removal or correction requests. Keep personal information and proof of ownership out of public issues. [Contact the maintainer](https://github.com/Killer-Anya/AutoSongClip/issues/new)
 
 <table>
   <tr>
-    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="375" alt="Desktop player with cover art, synchronized lyrics, and playback controls"></td>
-    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="375" alt="Mobile player with the current lyric and playback controls"></td>
-    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="375" alt="Mobile song library filtered by performance date"></td>
+    <td align="center" valign="top"><img src="docs/images/player-desktop.jpg" height="280" alt="Widescreen player with cover art, a vinyl record, and centered synchronized lyrics"></td>
+    <td align="center" valign="top"><img src="docs/images/player-mobile.jpg" height="280" alt="Mobile player with the current lyric and playback controls"></td>
+    <td align="center" valign="top"><img src="docs/images/library-mobile.jpg" height="280" alt="Mobile song library filtered by performance date"></td>
   </tr>
   <tr>
     <td align="center">Desktop player</td>
@@ -42,7 +42,7 @@ Flowchart symbols follow [ISO 5807:1985](https://www.iso.org/standard/11955.html
 
 ### Download, extract, and double-click to preview
 
-1. [Download the ZIP](https://github.com/Killer-Anya/songcut/archive/refs/heads/main.zip) and extract the whole folder.
+1. [Download the ZIP](https://github.com/Killer-Anya/AutoSongClip/archive/refs/heads/main.zip) and extract the whole folder.
 2. Install [Python 3.10 or later](https://www.python.org/downloads/). On macOS, double-click `Start SongCut.command`. On Windows, double-click `Start SongCut.bat`.
 3. Keep the launcher window open while using the player. The preview only needs Python and starts with an empty library. To load your own tracks, follow the [player notes](site/README.md).
 
