@@ -66,7 +66,7 @@ The public `pipeline/`, `lib/`, and `tools/` describe the V2 implementation and 
 
 ## Quality requirements
 
-V1 prioritizes the continuous sung performance. Some cuts leave out part of the instrumental intro or the final decay. Review the beginning and end by ear alongside the original recording, and check the song identity and lyric timing. The published thresholds and aggregate measurements belong to the V2 trial. [V1 review checklist and V2 quality references](docs/质量要求.md#english)
+V1 prioritizes the continuous sung performance. Some cuts leave out part of the instrumental intro or the final decay. Review the beginning and end by ear alongside the original recording, and check the song identity and lyric timing. The quality notes list V1’s checks alongside the thresholds and measurements from the V2 trial. [V1 review checklist and V2 quality references](docs/质量要求.md#english)
 
 ## Development log
 
